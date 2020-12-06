@@ -2,9 +2,18 @@ package model;
 
 import java.util.Date;
 
-public class PedidoCompra extends BaseClass { 
+public class PedidoCompra extends BaseClass {
 	private Date DataHoraDaCompra;
 	private int ClienteId;
+	private float ValorPedido;
+
+	public float getValorPedido() {
+		return ValorPedido;
+	}
+
+	public void setValorPedido(float valorPedido) {
+		ValorPedido = valorPedido;
+	}
 
 	public Date getDataHoraDaCompra() {
 		return DataHoraDaCompra;

@@ -1,8 +1,12 @@
 package view;
 
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -36,18 +40,41 @@ public class jfMenuPrincipal extends JFrame {
 	 */
 	public jfMenuPrincipal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 610, 398);
+		setBounds(100, 100, 752, 434);
 		contentPane = new JPanel();
-		contentPane.setBackground(UIManager.getColor("ToolBar.floatingForeground"));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
-		contentPane.setLayout(null);
 
-		JButton btnNewButton = new JButton("  Usuários");
-		btnNewButton.setIcon(new ImageIcon(jfMenuPrincipal.class.getResource("/assets/grupo-de-usuarios.png")));
-		btnNewButton.setFont(new Font("Dialog", Font.BOLD, 16));
-		btnNewButton.setBackground(Color.WHITE);
-		btnNewButton.setBounds(12, 12, 216, 108);
-		contentPane.add(btnNewButton);
+		JPanel contentPane_1 = new JPanel();
+		contentPane_1.setLayout(null);
+		contentPane_1.setBorder(new EmptyBorder(5, 5, 5, 5));
+		contentPane_1.setBackground(UIManager.getColor("Button.select"));
+		contentPane.add(contentPane_1, BorderLayout.CENTER);
+
+		JButton btnUsuarios = new JButton("  Usuários");
+		btnUsuarios.setIcon(new ImageIcon(jfMenuPrincipal.class.getResource("/assets/grupo-de-usuarios.png")));
+		btnUsuarios.setFont(new Font("Dialog", Font.BOLD, 16));
+		btnUsuarios.setBackground(Color.WHITE);
+		btnUsuarios.setBounds(12, 12, 216, 108);
+		contentPane_1.add(btnUsuarios);
+
+		JButton btnClientes = new JButton("  Clientes");
+		btnClientes.setIcon(new ImageIcon(jfMenuPrincipal.class.getResource("/assets/cliente.png")));
+		btnClientes.setFont(new Font("Dialog", Font.BOLD, 16));
+		btnClientes.setBackground(Color.WHITE);
+		btnClientes.setBounds(249, 12, 216, 108);
+		contentPane_1.add(btnClientes);
+		btnClientes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				try {
+					new jdListCliente().run();
+				} catch (ClassNotFoundException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
 	}
+
 }

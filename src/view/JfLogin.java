@@ -3,6 +3,7 @@ package view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 
 import javax.swing.JButton;
@@ -60,6 +61,8 @@ public class JfLogin extends JFrame {
 			}
 
 			new jfMenuPrincipal().run();
+
+			this.dispatchEvent(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		}
 	}
 
@@ -68,7 +71,7 @@ public class JfLogin extends JFrame {
 	 */
 	public JfLogin() {
 		setResizable(false);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

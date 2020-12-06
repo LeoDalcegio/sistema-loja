@@ -6,8 +6,8 @@ import model.Usuario;
 public class UsuarioController {
 	private static UsuarioController instance;
 
-	private Usuario _model;
-	private UsuarioDAO _usuarioDAO;
+	private Usuario model;
+	private UsuarioDAO usuarioDAO;
 
 	private UsuarioController() {
 	}
@@ -20,21 +20,21 @@ public class UsuarioController {
 	}
 
 	public void iniciaDadosUsuario(Usuario model, UsuarioDAO usuarioDAO) {
-		_model = model;
-		_usuarioDAO = usuarioDAO;
+		this.model = model;
+		this.usuarioDAO = usuarioDAO;
 	}
 
 	public void setLoginUsuario(String login) {
-		_model.setLogin(login);
+		this.model.setLogin(login);
 	}
 
 	public String getLoginUsuario() {
-		return _model.getLogin();
+		return this.model.getLogin();
 	}
 
 	public Usuario getUsuarioByLogin() {
-		String strPass = new String(_model.getSenha()).trim();
+		String strPass = new String(this.model.getSenha()).trim();
 
-		return _usuarioDAO.getUsuarioByLogin(_model.getLogin(), strPass);
+		return this.usuarioDAO.getUsuarioByLogin(this.model.getLogin(), strPass);
 	}
 }
