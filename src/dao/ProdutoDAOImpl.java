@@ -30,6 +30,7 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 
 			while (rs.next()) {
 				Produto produto = new Produto();
+				produto.setId(Integer.parseInt(rs.getString("Id")));
 				produto.setCodigoProduto(rs.getString("CodigoProduto"));
 				produto.setDescricaoProduto(rs.getString("DescricaoProduto"));
 				produto.setQuantidadeEmEstoque(Float.parseFloat(rs.getString("QuantidadeEmEstoque")));
@@ -54,7 +55,7 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "INSERT INTO Produto " + "(CodigoProduto, DescricaoProduo, QuantidadeEmEstoque, PrecoPadrao)"
+			String sql = "INSERT INTO Produto " + "(CodigoProduto, DescricaoProduto, QuantidadeEmEstoque, PrecoPadrao)"
 					+ "VALUES(?, ?, ?, ?)";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, produto.getCodigoProduto());
@@ -78,7 +79,7 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "UPDATE Produto SET CodigoProduto = ? DescricaoProduto = ? QuantidadeEmEstoque = ? PrecoPadrao = ? WHERE Id = ?";
+			String sql = "UPDATE Produto SET CodigoProduto = ?, DescricaoProduto = ?, QuantidadeEmEstoque = ?, PrecoPadrao = ? WHERE Id = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, produtoObjeto.getCodigoProduto());
 			pstmt.setString(2, produtoObjeto.getDescricaoProduto());
@@ -102,7 +103,7 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "DELETE Produto WHERE Id = ?";
+			String sql = "DELETE FROM Produto WHERE Id = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, produtoId);
 			pstmt.executeUpdate();

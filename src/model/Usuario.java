@@ -1,33 +1,36 @@
 package model;
 
-public class Usuario extends BaseClass { 
-	private String login;
-  	private char[] senha;
-  	private byte tipo;
+import enums.TipoUsuario;
 
-  	public Usuario (){ }
+public class Usuario extends BaseClass {
+	private String login;
+	private char[] senha;
+	private TipoUsuario tipo;
+
+	public Usuario() {
+	}
 
 	public String getLogin() {
 		return login;
 	}
-	
+
 	public void setLogin(String login) {
 		this.login = login;
 	}
-	
+
 	public char[] getSenha() {
 		return senha;
 	}
-	
+
 	public void setSenha(char[] senha) {
 		this.senha = senha;
 	}
-	
-	public byte getTipo() {
+
+	public TipoUsuario getTipo() {
 		return tipo;
 	}
-	
-	public void setTipo(byte tipo) {
+
+	public void setTipo(TipoUsuario tipo) {
 		this.tipo = tipo;
 	}
 }

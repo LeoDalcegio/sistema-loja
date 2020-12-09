@@ -1,5 +1,7 @@
 package controller;
 
+import java.util.List;
+
 import dao.interfaces.UsuarioDAO;
 import model.Usuario;
 
@@ -36,5 +38,25 @@ public class UsuarioController {
 		String strPass = new String(this.model.getSenha()).trim();
 
 		return this.usuarioDAO.getUsuarioByLogin(this.model.getLogin(), strPass);
+	}
+
+	public List<Usuario> getAllUsuarios() {
+		return this.usuarioDAO.getAllUsuarios();
+	}
+
+	public Usuario getUsuarioLogado() {
+		return this.model;
+	}
+
+	public void salvaUsuario(Usuario usuario) {
+		this.usuarioDAO.salvaUsuario(usuario);
+	}
+
+	public Usuario editaUsuario(Usuario usuario) {
+		return this.usuarioDAO.editaUsuario(usuario);
+	}
+
+	public void excluiUsuario(int usuarioId) {
+		this.usuarioDAO.excluiUsuario(usuarioId);
 	}
 }

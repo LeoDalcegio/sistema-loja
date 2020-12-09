@@ -74,7 +74,7 @@ public class ClienteDAOImpl extends BDGenericoDAO implements ClienteDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "UPDATE Cliente SET Nome = ? CPF = ? WHERE Id = ?";
+			String sql = "UPDATE Cliente SET Nome = ?, CPF = ? WHERE Id = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, clienteObjeto.getNome());
 			pstmt.setString(2, clienteObjeto.getCpf());
@@ -97,7 +97,7 @@ public class ClienteDAOImpl extends BDGenericoDAO implements ClienteDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "DELETE Cliente WHERE Id = ?";
+			String sql = "DELETE FROM Cliente WHERE Id = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, clienteId);
 			pstmt.executeUpdate();
@@ -106,6 +106,5 @@ public class ClienteDAOImpl extends BDGenericoDAO implements ClienteDAO {
 		} finally {
 			close(connection);
 		}
-
 	}
 }

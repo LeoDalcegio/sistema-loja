@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.interfaces.UsuarioDAO;
+import enums.TipoUsuario;
 import model.Usuario;
 
 public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
@@ -31,7 +32,14 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 			while (rs.next()) {
 				Usuario usuario = new Usuario();
 				usuario.setLogin(rs.getString("Login"));
-				usuario.setTipo(rs.getByte("Tipo"));
+
+				if (rs.getInt("Tipo") == TipoUsuario.Administrador.getValue()) {
+					usuario.setTipo(TipoUsuario.Administrador);
+				} else {
+					usuario.setTipo(TipoUsuario.Funcionario);
+				}
+
+				// usuario.setTipo(TipoUsuario.valueOf(rs.getString("Tipo").toLowerCase().trim()));
 				lstUsuarios.add(usuario);
 			}
 
@@ -58,13 +66,39 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, usuario.getLogin());
 			pstmt.setString(2, strPass);
-			pstmt.setByte(3, usuario.getTipo());
+			pstmt.setString(3, usuario.getTipo().toString().toLowerCase().trim());
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			close(connection);
 		}
+	}
+
+	@Override
+	public Usuario editaUsuario(Usuario usuarioObjeto) {
+		if (usuarioObjeto.getId() == 0) {
+			throw new IllegalArgumentException("Id informado inválido");
+		}
+
+		PreparedStatement pstmt = null;
+
+		try {
+			String strPass = new String(usuarioObjeto.getSenha()).trim();
+
+			String sql = "UPDATE Usario SET Login = ?, Senha = ?, Tipo = ? WHERE Id = ?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, usuarioObjeto.getLogin());
+			pstmt.setString(2, strPass);
+			pstmt.setString(3, usuarioObjeto.getTipo().toString().toLowerCase().trim());
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			close(connection);
+		}
+
+		return usuarioObjeto;
 	}
 
 	@Override
@@ -84,7 +118,12 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 				Usuario usuario = new Usuario();
 				usuario.setId(rs.getInt("Id"));
 				usuario.setLogin(rs.getString("Login"));
-				usuario.setTipo(rs.getByte("Tipo"));
+
+				if (rs.getInt("Tipo") == TipoUsuario.Administrador.getValue()) {
+					usuario.setTipo(TipoUsuario.Administrador);
+				} else {
+					usuario.setTipo(TipoUsuario.Funcionario);
+				}
 
 				return usuario;
 			} else {
@@ -95,6 +134,25 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 			return null;
 		} finally {
 			close(rs);
+			close(connection);
+		}
+	}
+
+	@Override
+	public void excluiUsuario(int usuarioId) {
+		if (usuarioId == 0) {
+			throw new IllegalArgumentException("Id informado inválido");
+		}
+		PreparedStatement pstmt = null;
+
+		try {
+			String sql = "DELETE FROM Usuaro WHERE Id = ?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setInt(1, usuarioId);
+			pstmt.executeUpdate();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
 			close(connection);
 		}
 	}

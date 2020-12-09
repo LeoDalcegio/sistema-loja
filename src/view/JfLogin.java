@@ -53,7 +53,7 @@ public class JfLogin extends JFrame {
 
 			this.usuarioController.iniciaDadosUsuario(usuarioModel, usuarioDAOImpl);
 
-			Usuario usuarioLogin = this.usuarioController.getUsuarioByLogin();
+			Usuario usuarioLogin = this.usuarioController.getUsuarioLogado();
 
 			if (usuarioLogin == null) {
 				JOptionPane.showMessageDialog(null, "Usuário ou senha inválidos");
@@ -90,6 +90,7 @@ public class JfLogin extends JFrame {
 		passwordField.setBounds(144, 134, 170, 29);
 		passwordField.setToolTipText("Senha");
 		contentPane.add(passwordField);
+
 		btnLogin.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
@@ -100,6 +101,7 @@ public class JfLogin extends JFrame {
 				}
 			}
 		});
+
 		btnLogin.setBounds(144, 168, 170, 35);
 		contentPane.add(btnLogin);
 
