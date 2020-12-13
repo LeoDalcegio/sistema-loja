@@ -3,7 +3,6 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +13,7 @@ import model.Usuario;
 public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 	private Connection connection = null;
 
-	public UsuarioDAOImpl() throws SQLException, ClassNotFoundException {
-		this.connection = getConnection("sistema-loja");
+	public UsuarioDAOImpl() {
 	}
 
 	@Override
@@ -25,12 +23,15 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 		List<Usuario> lstUsuarios = new ArrayList<Usuario>();
 
 		try {
+			this.connection = getConnection("sistema-loja");
+
 			String sql = "SELECT * " + "FROM Usuario";
 			pstmt = connection.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 
 			while (rs.next()) {
 				Usuario usuario = new Usuario();
+				usuario.setId(rs.getInt("Id"));
 				usuario.setLogin(rs.getString("Login"));
 
 				if (rs.getInt("Tipo") == TipoUsuario.Administrador.getValue()) {
@@ -59,6 +60,7 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 	public void salvaUsuario(Usuario usuario) {
 		PreparedStatement pstmt = null;
 		try {
+			this.connection = getConnection("sistema-loja");
 
 			String strPass = new String(usuario.getSenha()).trim();
 
@@ -66,7 +68,7 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, usuario.getLogin());
 			pstmt.setString(2, strPass);
-			pstmt.setString(3, usuario.getTipo().toString().toLowerCase().trim());
+			pstmt.setInt(3, usuario.getTipo().getValue());
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -84,13 +86,16 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 		PreparedStatement pstmt = null;
 
 		try {
+			this.connection = getConnection("sistema-loja");
+
 			String strPass = new String(usuarioObjeto.getSenha()).trim();
 
-			String sql = "UPDATE Usario SET Login = ?, Senha = ?, Tipo = ? WHERE Id = ?";
+			String sql = "UPDATE Usuario SET Login = ?, Senha = ?, Tipo = ? WHERE Id = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, usuarioObjeto.getLogin());
 			pstmt.setString(2, strPass);
-			pstmt.setString(3, usuarioObjeto.getTipo().toString().toLowerCase().trim());
+			pstmt.setInt(3, usuarioObjeto.getTipo().getValue());
+			pstmt.setInt(4, usuarioObjeto.getId());
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -107,6 +112,8 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 		ResultSet rs = null;
 
 		try {
+			this.connection = getConnection("sistema-loja");
+
 			String sql = "SELECT * " + "FROM Usuario " + "WHERE Login = ? AND Senha = ? ";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, login);
@@ -146,7 +153,9 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "DELETE FROM Usuaro WHERE Id = ?";
+			this.connection = getConnection("sistema-loja");
+
+			String sql = "DELETE FROM Usuario WHERE Id = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setInt(1, usuarioId);
 			pstmt.executeUpdate();

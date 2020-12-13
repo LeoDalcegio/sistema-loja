@@ -20,8 +20,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.ProdutoController;
+import controller.UsuarioController;
 import dao.ProdutoDAOImpl;
 import enums.RequestType;
+import enums.TipoUsuario;
 import model.Produto;
 
 public class jdListProduto extends JDialog {
@@ -76,7 +78,7 @@ public class jdListProduto extends JDialog {
 				table.setBackground(UIManager.getColor("Desktop.background"));
 				table.setModel(new DefaultTableModel(new Object[][] {},
 						new String[] { "Id", "C\u00F3digo", "Descri\u00E7\u00E3o", "Estoque", "Pre\u00E7o" }) {
-					boolean[] columnEditables = new boolean[] { false, false, false, true, true };
+					boolean[] columnEditables = new boolean[] { false, false, false, false, false };
 
 					public boolean isCellEditable(int row, int column) {
 						return columnEditables[column];
@@ -156,8 +158,8 @@ public class jdListProduto extends JDialog {
 				int id = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
 				String codigoProduto = table.getModel().getValueAt(row, 1).toString();
 				String descricaoProduto = table.getModel().getValueAt(row, 2).toString();
-				float quantidadeEmEstoque = Float.parseFloat(table.getModel().getValueAt(row, 3).toString());
-				float precoPadrao = Float.parseFloat(table.getModel().getValueAt(row, 4).toString());
+				double quantidadeEmEstoque = Double.parseDouble(table.getModel().getValueAt(row, 3).toString());
+				double precoPadrao = Double.parseDouble(table.getModel().getValueAt(row, 4).toString());
 
 				Produto produto = new Produto();
 				produto.setId(id);
@@ -199,6 +201,16 @@ public class jdListProduto extends JDialog {
 		});
 		btnIncluir.setBounds(439, 386, 105, 27);
 		contentPanel.add(btnIncluir);
+
+		UsuarioController usuarioController = UsuarioController.getInstance();
+
+		TipoUsuario tipoUsuario = usuarioController.getUsuarioLogado().getTipo();
+
+		if (tipoUsuario != TipoUsuario.Administrador) {
+			btnEditar.setVisible(false);
+			btnExcluir.setVisible(false);
+			btnIncluir.setBounds(btnExcluir.getBounds());
+		}
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {

@@ -3,8 +3,8 @@ package model;
 public class Produto extends BaseClass {
 	private String codigoProduto;
 	private String descricaoProduto;
-	private float quantidadeEmEstoque;
-	private float precoPadrao;
+	private double quantidadeEmEstoque;
+	private double precoPadrao;
 
 	public Produto() {
 	}
@@ -25,19 +25,19 @@ public class Produto extends BaseClass {
 		this.descricaoProduto = descricaoProduto;
 	}
 
-	public float getQuantidadeEmEstoque() {
+	public double getQuantidadeEmEstoque() {
 		return quantidadeEmEstoque;
 	}
 
-	public void setQuantidadeEmEstoque(float quantidadeEmEstoque) {
+	public void setQuantidadeEmEstoque(double quantidadeEmEstoque) {
 		this.quantidadeEmEstoque = quantidadeEmEstoque;
 	}
 
-	public float getPrecoPadrao() {
+	public double getPrecoPadrao() {
 		return precoPadrao;
 	}
 
-	public void setPrecoPadrao(float precoPadrao) {
+	public void setPrecoPadrao(double precoPadrao) {
 		this.precoPadrao = precoPadrao;
 	}
 }

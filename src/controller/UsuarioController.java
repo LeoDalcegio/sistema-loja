@@ -8,7 +8,7 @@ import model.Usuario;
 public class UsuarioController {
 	private static UsuarioController instance;
 
-	private Usuario model;
+	private Usuario usuario;
 	private UsuarioDAO usuarioDAO;
 
 	private UsuarioController() {
@@ -21,23 +21,24 @@ public class UsuarioController {
 		return instance;
 	}
 
-	public void iniciaDadosUsuario(Usuario model, UsuarioDAO usuarioDAO) {
-		this.model = model;
+	public void iniciaDadosUsuario(UsuarioDAO usuarioDAO) {
 		this.usuarioDAO = usuarioDAO;
 	}
 
 	public void setLoginUsuario(String login) {
-		this.model.setLogin(login);
+		this.usuario.setLogin(login);
 	}
 
 	public String getLoginUsuario() {
-		return this.model.getLogin();
+		return this.usuario.getLogin();
 	}
 
-	public Usuario getUsuarioByLogin() {
-		String strPass = new String(this.model.getSenha()).trim();
+	public Usuario realizaLoginUsuario(Usuario usuario) {
+		String strPass = new String(usuario.getSenha()).trim();
 
-		return this.usuarioDAO.getUsuarioByLogin(this.model.getLogin(), strPass);
+		this.usuario = this.usuarioDAO.getUsuarioByLogin(usuario.getLogin(), strPass);
+
+		return this.usuario;
 	}
 
 	public List<Usuario> getAllUsuarios() {
@@ -45,7 +46,7 @@ public class UsuarioController {
 	}
 
 	public Usuario getUsuarioLogado() {
-		return this.model;
+		return this.usuario;
 	}
 
 	public void salvaUsuario(Usuario usuario) {

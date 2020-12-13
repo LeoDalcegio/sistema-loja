@@ -20,8 +20,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.ClienteController;
+import controller.UsuarioController;
 import dao.ClienteDAOImpl;
 import enums.RequestType;
+import enums.TipoUsuario;
 import model.Cliente;
 
 public class jdListCliente extends JDialog {
@@ -194,6 +196,17 @@ public class jdListCliente extends JDialog {
 		});
 		btnIncluir.setBounds(439, 386, 105, 27);
 		contentPanel.add(btnIncluir);
+
+		UsuarioController usuarioController = UsuarioController.getInstance();
+
+		TipoUsuario tipoUsuario = usuarioController.getUsuarioLogado().getTipo();
+
+		if (tipoUsuario != TipoUsuario.Administrador) {
+			btnEditar.setVisible(false);
+			btnExcluir.setVisible(false);
+
+			btnIncluir.setBounds(btnExcluir.getBounds());
+		}
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {

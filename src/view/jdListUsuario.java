@@ -23,7 +23,6 @@ import javax.swing.table.DefaultTableModel;
 import controller.UsuarioController;
 import enums.RequestType;
 import enums.TipoUsuario;
-import model.Produto;
 import model.Usuario;
 
 public class jdListUsuario extends JDialog {
@@ -76,14 +75,13 @@ public class jdListUsuario extends JDialog {
 				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				table.setShowVerticalLines(false);
 				table.setBackground(UIManager.getColor("Desktop.background"));
-				table.setModel(
-						new DefaultTableModel(new Object[][] {}, new String[] { "Id", "Login", "Senha", "Tipo" }) {
-							boolean[] columnEditables = new boolean[] { false, false, false, true };
+				table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Id", "Login", "Tipo" }) {
+					boolean[] columnEditables = new boolean[] { false, false, true };
 
-							public boolean isCellEditable(int row, int column) {
-								return columnEditables[column];
-							}
-						});
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+				});
 				table.getColumnModel().getColumn(0).setPreferredWidth(70);
 				table.getColumnModel().getColumn(0).setMaxWidth(70);
 
@@ -144,26 +142,21 @@ public class jdListUsuario extends JDialog {
 		btnEditar.setBackground(Color.YELLOW);
 		btnEditar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-
 				if (table.getSelectionModel().isSelectionEmpty()) {
 					return;
 				}
 
 				int row = table.getSelectedRow();
 				int id = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
-				String codigoProduto = table.getModel().getValueAt(row, 1).toString();
-				String descricaoProduto = table.getModel().getValueAt(row, 2).toString();
-				float quantidadeEmEstoque = Float.parseFloat(table.getModel().getValueAt(row, 3).toString());
-				float precoPadrao = Float.parseFloat(table.getModel().getValueAt(row, 4).toString());
+				String login = table.getModel().getValueAt(row, 1).toString();
+				TipoUsuario tipoUsuario = TipoUsuario.valueOf(table.getModel().getValueAt(row, 2).toString());
 
-				Produto produto = new Produto();
-				produto.setId(id);
-				produto.setCodigoProduto(codigoProduto);
-				produto.setDescricaoProduto(descricaoProduto);
-				produto.setQuantidadeEmEstoque(quantidadeEmEstoque);
-				produto.setPrecoPadrao(precoPadrao);
+				Usuario usuario = new Usuario();
+				usuario.setId(id);
+				usuario.setLogin(login);
+				usuario.setTipo(tipoUsuario);
 
-				new jdFormProduto(RequestType.Edit, produto).run(RequestType.Edit, produto);
+				new jdFormUsuario(RequestType.Edit, usuario).run(RequestType.Edit, usuario);
 
 				try {
 					montaList();
@@ -184,7 +177,7 @@ public class jdListUsuario extends JDialog {
 
 		btnIncluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new jdFormProduto(RequestType.Create, null).run(RequestType.Create, null);
+				new jdFormUsuario(RequestType.Create, null).run(RequestType.Create, null);
 
 				try {
 					montaList();
@@ -199,6 +192,7 @@ public class jdListUsuario extends JDialog {
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {
+
 		UsuarioController usuarioController = UsuarioController.getInstance();
 
 		List<Usuario> usuarios = usuarioController.getAllUsuarios();
@@ -219,7 +213,7 @@ public class jdListUsuario extends JDialog {
 				tipo = TipoUsuario.Funcionario;
 			}
 
-			Object[] linha = { usuario.getId(), usuario.getLogin(), usuario.getSenha(), tipo };
+			Object[] linha = { usuario.getId(), usuario.getLogin(), tipo };
 
 			model.addRow(linha);
 		}
