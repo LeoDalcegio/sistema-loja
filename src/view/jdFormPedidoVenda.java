@@ -13,6 +13,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -29,6 +30,7 @@ public class jdFormPedidoVenda extends JDialog {
 	private PedidoVenda pedidoVendaEditar;
 	private JTextField txtCliente;
 	private JTextField txtValorPedido;
+	private JTextField txCliente;
 
 	/**
 	 * Launch the application.
@@ -54,20 +56,11 @@ public class jdFormPedidoVenda extends JDialog {
 		this.pedidoVendaEditar = pedidoVendaEditar;
 		this.windowRequestType = requestType;
 
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 699, 418);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
-
-		txtDataPedidoVenda = new JTextField();
-		txtDataPedidoVenda.setBounds(95, 12, 114, 21);
-		contentPanel.add(txtDataPedidoVenda);
-		txtDataPedidoVenda.setColumns(10);
-
-		JLabel lblNewLabel = new JLabel("Data:");
-		lblNewLabel.setBounds(12, 14, 60, 17);
-		contentPanel.add(lblNewLabel);
 
 		if (this.pedidoVendaEditar != null) {
 			txtDataPedidoVenda.setText(this.pedidoVendaEditar.getDataDaVenda().toString());
@@ -127,7 +120,7 @@ public class jdFormPedidoVenda extends JDialog {
 				}
 			});
 
-			okButton.setBounds(254, 236, 86, 27);
+			okButton.setBounds(504, 357, 86, 27);
 			contentPanel.add(okButton);
 			okButton.setActionCommand("OK");
 			getRootPane().setDefaultButton(okButton);
@@ -137,41 +130,59 @@ public class jdFormPedidoVenda extends JDialog {
 			cancelButton.setBackground(Color.LIGHT_GRAY);
 			cancelButton.setForeground(Color.BLACK);
 			cancelButton.setBorderPainted(false);
-			cancelButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent arg0) {
-					jdFormPedidoVenda.this
-							.dispatchEvent(new WindowEvent(jdFormPedidoVenda.this, WindowEvent.WINDOW_CLOSING));
-				}
-			});
-			cancelButton.setBounds(352, 236, 86, 27);
-			contentPanel.add(cancelButton);
-			cancelButton.setActionCommand("Cancel");
+
 		}
-
-		JLabel lblCliente = new JLabel("Cliente:");
-		lblCliente.setBounds(12, 47, 60, 17);
-		contentPanel.add(lblCliente);
-
-		txtCliente = new JTextField();
-		txtCliente.setColumns(10);
-		txtCliente.setBounds(95, 45, 114, 21);
-		contentPanel.add(txtCliente);
-
-		JButton btnItens = new JButton("Itens");
-		btnItens.setForeground(Color.BLACK);
-		btnItens.setBorderPainted(false);
-		btnItens.setBackground(Color.YELLOW);
-		btnItens.setActionCommand("OK");
-		btnItens.setBounds(12, 236, 86, 27);
-		contentPanel.add(btnItens);
-
-		JLabel lblValor = new JLabel("Valor:");
-		lblValor.setBounds(12, 186, 60, 17);
-		contentPanel.add(lblValor);
 
 		txtValorPedido = new JTextField();
 		txtValorPedido.setColumns(10);
-		txtValorPedido.setBounds(95, 184, 114, 21);
+		txtValorPedido.setBounds(109, 363, 114, 21);
 		contentPanel.add(txtValorPedido);
+
+		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
+		tabbedPane.setBounds(0, -1, 691, 353);
+		contentPanel.add(tabbedPane);
+
+		JPanel panel = new JPanel();
+		tabbedPane.addTab("Pedido", null, panel, null);
+		panel.setLayout(null);
+
+		JLabel lblNewLabel = new JLabel("Data:");
+		lblNewLabel.setBounds(12, 14, 60, 17);
+		panel.add(lblNewLabel);
+
+		txtDataPedidoVenda = new JTextField();
+		txtDataPedidoVenda.setBounds(95, 12, 114, 21);
+		panel.add(txtDataPedidoVenda);
+		txtDataPedidoVenda.setColumns(10);
+
+		JLabel lblCliente = new JLabel("Cliente:");
+		lblCliente.setBounds(12, 45, 60, 17);
+		panel.add(lblCliente);
+
+		txCliente = new JTextField();
+		txCliente.setColumns(10);
+		txCliente.setBounds(95, 43, 114, 21);
+		panel.add(txCliente);
+
+		JPanel panel_1 = new JPanel();
+		tabbedPane.addTab("Itens", null, panel_1, null);
+
+		JLabel lblValorTotal = new JLabel("Valor Total:");
+		lblValorTotal.setBounds(10, 365, 81, 17);
+		contentPanel.add(lblValorTotal);
+
+		JButton cancelButton = new JButton("Cancelar");
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				jdFormPedidoVenda.this
+						.dispatchEvent(new WindowEvent(jdFormPedidoVenda.this, WindowEvent.WINDOW_CLOSING));
+			}
+		});
+		cancelButton.setForeground(Color.BLACK);
+		cancelButton.setBorderPainted(false);
+		cancelButton.setBackground(Color.LIGHT_GRAY);
+		cancelButton.setActionCommand("Cancel");
+		cancelButton.setBounds(597, 357, 86, 27);
+		contentPanel.add(cancelButton);
 	}
 }
