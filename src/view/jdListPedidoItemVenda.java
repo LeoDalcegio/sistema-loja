@@ -29,13 +29,16 @@ public class jdListPedidoItemVenda extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private DefaultTableModel model;
+	private int nrPedido;
 
 	/**
 	 * Launch the application.
 	 */
-	public void run() {
+	public void run(int nrPedido) {
 		try {
-			jdListPedidoItemVenda dialog = new jdListPedidoItemVenda();
+			this.nrPedido = nrPedido;
+
+			jdListPedidoItemVenda dialog = new jdListPedidoItemVenda(nrPedido);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -49,7 +52,7 @@ public class jdListPedidoItemVenda extends JDialog {
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
 	 */
-	public jdListPedidoItemVenda() throws ClassNotFoundException, SQLException {
+	public jdListPedidoItemVenda(int nrPedido) throws ClassNotFoundException, SQLException {
 		setResizable(false);
 		getContentPane().setForeground(UIManager.getColor("DesktopIcon.background"));
 		setTitle("Pedidos de Compra");

@@ -19,7 +19,7 @@ public class PedidoVendaDAOImpl extends BDGenericoDAO implements PedidoVendaDAO 
 	}
 
 	@Override
-	public void salvaPedidoVenda(PedidoVenda pedidoVenda) {
+	public PedidoVenda salvaPedidoVenda(PedidoVenda pedidoVenda) {
 		PreparedStatement pstmt = null;
 
 		try {
@@ -28,12 +28,16 @@ public class PedidoVendaDAOImpl extends BDGenericoDAO implements PedidoVendaDAO 
 			pstmt.setDate(1, (Date) pedidoVenda.getDataDaVenda());
 			pstmt.setInt(2, pedidoVenda.getClienteId());
 			pstmt.setFloat(3, pedidoVenda.getValorPedido());
-			pstmt.executeUpdate();
+			pstmt.executeQuery();
+
+			pedidoVenda.setId(Integer.parseInt(pstmt.getGeneratedKeys().toString()));
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
 			close(connection);
 		}
+
+		return pedidoVenda;
 	}
 
 	@Override

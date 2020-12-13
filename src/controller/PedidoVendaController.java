@@ -16,8 +16,8 @@ public class PedidoVendaController {
 		return this.pedidoVendaDAO.getAllPedidosVenda();
 	}
 
-	public void salvaPedidoVenda(PedidoVenda pedidoVenda) {
-		this.pedidoVendaDAO.salvaPedidoVenda(pedidoVenda);
+	public PedidoVenda salvaPedidoVenda(PedidoVenda pedidoVenda) {
+		return this.pedidoVendaDAO.salvaPedidoVenda(pedidoVenda);
 	}
 
 	public PedidoVenda editaPedidoVenda(PedidoVenda pedidoVenda) {

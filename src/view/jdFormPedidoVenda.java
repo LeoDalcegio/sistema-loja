@@ -13,7 +13,6 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
@@ -48,6 +47,50 @@ public class jdFormPedidoVenda extends JDialog {
 		}
 	}
 
+	private boolean pocessaSalvar() {
+		if (txtDataPedidoVenda.getText().equals("")) {
+			txtDataPedidoVenda.requestFocus();
+			return true;
+		}
+
+		if (txtCliente.getText().equals("")) {
+			txtCliente.requestFocus();
+			return true;
+		}
+
+		PedidoVenda pedidoVenda = new PedidoVenda();
+		pedidoVenda.setId(pedidoVenda != null ? pedidoVenda.getId() : 0);
+		// pedidoVenda.setClienteId(txt);
+
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+		try {
+			pedidoVenda.setDataDaVenda(formatter.parse(txtDataPedidoVenda.getText()));
+		} catch (ParseException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		PedidoVendaController pedidoVendaController = null;
+
+		try {
+			PedidoVendaDAOImpl pedidoVendaDAOImpl = new PedidoVendaDAOImpl();
+
+			pedidoVendaController = new PedidoVendaController(pedidoVendaDAOImpl);
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		if (jdFormPedidoVenda.this.windowRequestType == RequestType.Create) {
+			pedidoVendaEditar = pedidoVendaController.salvaPedidoVenda(pedidoVenda);
+		} else if (jdFormPedidoVenda.this.windowRequestType == RequestType.Edit) {
+			pedidoVendaEditar = pedidoVendaController.editaPedidoVenda(pedidoVenda);
+		}
+
+		return false;
+	}
+
 	/**
 	 * Create the dialog.
 	 */
@@ -56,7 +99,7 @@ public class jdFormPedidoVenda extends JDialog {
 		this.pedidoVendaEditar = pedidoVendaEditar;
 		this.windowRequestType = requestType;
 
-		setBounds(100, 100, 699, 418);
+		setBounds(100, 100, 579, 286);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
@@ -74,45 +117,9 @@ public class jdFormPedidoVenda extends JDialog {
 			okButton.setBackground(Color.GREEN);
 			okButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent arg0) {
-					// VALIDAR CAMPOS
-					if (txtDataPedidoVenda.getText().equals("")) {
-						txtDataPedidoVenda.requestFocus();
+
+					if (pocessaSalvar() == true) {
 						return;
-					}
-
-					if (txtCliente.getText().equals("")) {
-						txtCliente.requestFocus();
-						return;
-					}
-
-					PedidoVenda pedidoVenda = new PedidoVenda();
-					pedidoVenda.setId(pedidoVenda != null ? pedidoVenda.getId() : 0);
-					// pedidoVenda.setClienteId(txt);
-
-					SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-					try {
-						pedidoVenda.setDataDaVenda(formatter.parse(txtDataPedidoVenda.getText()));
-					} catch (ParseException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					PedidoVendaController pedidoVendaController = null;
-
-					try {
-						PedidoVendaDAOImpl pedidoVendaDAOImpl = new PedidoVendaDAOImpl();
-
-						pedidoVendaController = new PedidoVendaController(pedidoVendaDAOImpl);
-					} catch (ClassNotFoundException | SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-
-					if (jdFormPedidoVenda.this.windowRequestType == RequestType.Create) {
-						pedidoVendaController.salvaPedidoVenda(pedidoVenda);
-					} else if (jdFormPedidoVenda.this.windowRequestType == RequestType.Edit) {
-						pedidoVendaController.editaPedidoVenda(pedidoVenda);
 					}
 
 					jdFormPedidoVenda.this
@@ -120,7 +127,7 @@ public class jdFormPedidoVenda extends JDialog {
 				}
 			});
 
-			okButton.setBounds(504, 357, 86, 27);
+			okButton.setBounds(387, 227, 86, 27);
 			contentPanel.add(okButton);
 			okButton.setActionCommand("OK");
 			getRootPane().setDefaultButton(okButton);
@@ -135,40 +142,11 @@ public class jdFormPedidoVenda extends JDialog {
 
 		txtValorPedido = new JTextField();
 		txtValorPedido.setColumns(10);
-		txtValorPedido.setBounds(109, 363, 114, 21);
+		txtValorPedido.setBounds(93, 151, 114, 21);
 		contentPanel.add(txtValorPedido);
 
-		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBounds(0, -1, 691, 353);
-		contentPanel.add(tabbedPane);
-
-		JPanel panel = new JPanel();
-		tabbedPane.addTab("Pedido", null, panel, null);
-		panel.setLayout(null);
-
-		JLabel lblNewLabel = new JLabel("Data:");
-		lblNewLabel.setBounds(12, 14, 60, 17);
-		panel.add(lblNewLabel);
-
-		txtDataPedidoVenda = new JTextField();
-		txtDataPedidoVenda.setBounds(95, 12, 114, 21);
-		panel.add(txtDataPedidoVenda);
-		txtDataPedidoVenda.setColumns(10);
-
-		JLabel lblCliente = new JLabel("Cliente:");
-		lblCliente.setBounds(12, 45, 60, 17);
-		panel.add(lblCliente);
-
-		txCliente = new JTextField();
-		txCliente.setColumns(10);
-		txCliente.setBounds(95, 43, 114, 21);
-		panel.add(txCliente);
-
-		JPanel panel_1 = new JPanel();
-		tabbedPane.addTab("Itens", null, panel_1, null);
-
 		JLabel lblValorTotal = new JLabel("Valor Total:");
-		lblValorTotal.setBounds(10, 365, 81, 17);
+		lblValorTotal.setBounds(12, 153, 81, 17);
 		contentPanel.add(lblValorTotal);
 
 		JButton cancelButton = new JButton("Cancelar");
@@ -182,7 +160,48 @@ public class jdFormPedidoVenda extends JDialog {
 		cancelButton.setBorderPainted(false);
 		cancelButton.setBackground(Color.LIGHT_GRAY);
 		cancelButton.setActionCommand("Cancel");
-		cancelButton.setBounds(597, 357, 86, 27);
+		cancelButton.setBounds(480, 227, 86, 27);
 		contentPanel.add(cancelButton);
+
+		txCliente = new JTextField();
+		txCliente.setBounds(93, 43, 114, 21);
+		contentPanel.add(txCliente);
+		txCliente.setColumns(10);
+
+		JLabel lblCliente = new JLabel("Cliente:");
+		lblCliente.setBounds(10, 45, 60, 17);
+		contentPanel.add(lblCliente);
+
+		JLabel lblNewLabel = new JLabel("Data:");
+		lblNewLabel.setBounds(10, 14, 60, 17);
+		contentPanel.add(lblNewLabel);
+
+		txtDataPedidoVenda = new JTextField();
+		txtDataPedidoVenda.setBounds(93, 12, 114, 21);
+		contentPanel.add(txtDataPedidoVenda);
+		txtDataPedidoVenda.setColumns(10);
+
+		JButton btnItens = new JButton("Itens");
+		btnItens.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (pocessaSalvar() == true) {
+					return;
+				}
+
+				try {
+					new jdListPedidoItemVenda(jdFormPedidoVenda.this.pedidoVendaEditar.getId())
+							.run(jdFormPedidoVenda.this.pedidoVendaEditar.getId());
+				} catch (ClassNotFoundException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		btnItens.setForeground(Color.BLACK);
+		btnItens.setBorderPainted(false);
+		btnItens.setBackground(Color.ORANGE);
+		btnItens.setActionCommand("OK");
+		btnItens.setBounds(7, 227, 86, 27);
+		contentPanel.add(btnItens);
 	}
 }
