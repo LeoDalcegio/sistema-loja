@@ -27,7 +27,7 @@ public class jdFormPedidoVenda extends JDialog {
 	private JTextField txtDataPedidoVenda;
 	private RequestType windowRequestType;
 	private PedidoVenda pedidoVendaEditar;
-	private JTextField txtCliente;
+
 	private JTextField txtValorPedido;
 	private JTextField txCliente;
 
@@ -53,14 +53,14 @@ public class jdFormPedidoVenda extends JDialog {
 			return true;
 		}
 
-		if (txtCliente.getText().equals("")) {
-			txtCliente.requestFocus();
+		if (txCliente.getText().equals("")) {
+			txCliente.requestFocus();
 			return true;
 		}
 
 		PedidoVenda pedidoVenda = new PedidoVenda();
 		pedidoVenda.setId(pedidoVenda != null ? pedidoVenda.getId() : 0);
-		// pedidoVenda.setClienteId(txt);
+		pedidoVenda.setClienteId(Integer.parseInt(txCliente.getText()));
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -82,7 +82,7 @@ public class jdFormPedidoVenda extends JDialog {
 			e.printStackTrace();
 		}
 
-		if (jdFormPedidoVenda.this.windowRequestType == RequestType.Create) {
+		if (jdFormPedidoVenda.this.windowRequestType == RequestType.Create && this.pedidoVendaEditar == null) {
 			pedidoVendaEditar = pedidoVendaController.salvaPedidoVenda(pedidoVenda);
 		} else if (jdFormPedidoVenda.this.windowRequestType == RequestType.Edit) {
 			pedidoVendaEditar = pedidoVendaController.editaPedidoVenda(pedidoVenda);

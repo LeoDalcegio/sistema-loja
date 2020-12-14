@@ -22,11 +22,12 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
 import controller.PedidoItemVendaController;
+import controller.PedidoVendaController;
 import controller.UsuarioController;
 import dao.PedidoItemVendaDAOImpl;
+import dao.PedidoVendaDAOImpl;
 import enums.RequestType;
 import enums.TipoUsuario;
-import model.PedidoItemVenda;
 import model.PedidoVenda;
 
 public class jdListPedidoVenda extends JDialog {
@@ -79,19 +80,19 @@ public class jdListPedidoVenda extends JDialog {
 				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				table.setShowVerticalLines(false);
 				table.setBackground(UIManager.getColor("Desktop.background"));
-				table.setModel(new DefaultTableModel(new Object[][] {},
-						new String[] { "Id", "Pedido Venda Id", "Produto", "Quantidade", "Valor" }) {
-					boolean[] columnEditables = new boolean[] { false, false, false, true, false };
+				table.setModel(
+						new DefaultTableModel(new Object[][] {}, new String[] { "Id", "Cliente", "Data", "Valor" }) {
+							boolean[] columnEditables = new boolean[] { false, false, false, false };
 
-					public boolean isCellEditable(int row, int column) {
-						return columnEditables[column];
-					}
-				});
+							public boolean isCellEditable(int row, int column) {
+								return columnEditables[column];
+							}
+						});
 				table.getColumnModel().getColumn(0).setPreferredWidth(70);
 				table.getColumnModel().getColumn(0).setMaxWidth(70);
 				table.getColumnModel().getColumn(1).setPreferredWidth(106);
 				table.getColumnModel().getColumn(2).setPreferredWidth(94);
-				table.getColumnModel().getColumn(4).setPreferredWidth(90);
+				table.getColumnModel().getColumn(3).setPreferredWidth(90);
 
 				table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
 				table.getTableHeader().setBackground(new Color(32, 163, 203));
@@ -227,11 +228,11 @@ public class jdListPedidoVenda extends JDialog {
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {
-		PedidoItemVendaDAOImpl pedidoItemVendaDAOImpl = new PedidoItemVendaDAOImpl();
+		PedidoVendaDAOImpl pedidoVendaDAOImpl = new PedidoVendaDAOImpl();
 
-		PedidoItemVendaController pedidoItemVendaController = new PedidoItemVendaController(pedidoItemVendaDAOImpl);
+		PedidoVendaController pedidoVendaController = new PedidoVendaController(pedidoVendaDAOImpl);
 
-		List<PedidoItemVenda> pedidosItem = pedidoItemVendaController.getAllPedidosItemVenda();
+		List<PedidoVenda> pedidos = pedidoVendaController.getAllPedidosVenda();
 
 		int rowCount = model.getRowCount();
 
@@ -239,9 +240,9 @@ public class jdListPedidoVenda extends JDialog {
 			model.removeRow(i);
 		}
 
-		for (PedidoItemVenda pedidoItem : pedidosItem) {
-			Object[] linha = { pedidoItem.getId(), pedidoItem.getPedidoVendaId(), pedidoItem.getProdutoId(),
-					pedidoItem.getQuantidade(), pedidoItem.getValorUnitario() };
+		for (PedidoVenda pedido : pedidos) {
+			Object[] linha = { pedido.getId(), pedido.getClienteId(), pedido.getDataDaVenda(),
+					pedido.getValorPedido() };
 
 			model.addRow(linha);
 		}

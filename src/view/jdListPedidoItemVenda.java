@@ -77,6 +77,7 @@ public class jdListPedidoItemVenda extends JDialog {
 				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				table.setShowVerticalLines(false);
 				table.setBackground(UIManager.getColor("Desktop.background"));
+
 				table.setModel(new DefaultTableModel(new Object[][] {},
 						new String[] { "Id", "Pedido Venda Id", "Produto", "Quantidade", "Valor Unit\u00E1rio" }) {
 					boolean[] columnEditables = new boolean[] { false, false, false, true, false };
@@ -85,6 +86,7 @@ public class jdListPedidoItemVenda extends JDialog {
 						return columnEditables[column];
 					}
 				});
+
 				table.getColumnModel().getColumn(0).setPreferredWidth(70);
 				table.getColumnModel().getColumn(0).setMaxWidth(70);
 				table.getColumnModel().getColumn(2).setPreferredWidth(94);

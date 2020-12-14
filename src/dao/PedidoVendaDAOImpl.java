@@ -25,10 +25,10 @@ public class PedidoVendaDAOImpl extends BDGenericoDAO implements PedidoVendaDAO 
 		try {
 			String sql = "INSERT INTO PedidoVenda " + "(DataDaVenda, ClienteId, ValorPedido)" + "VALUES(?, ?, ?)";
 			pstmt = connection.prepareStatement(sql);
-			pstmt.setDate(1, (Date) pedidoVenda.getDataDaVenda());
+			pstmt.setDate(1, new java.sql.Date(pedidoVenda.getDataDaVenda().getTime()));
 			pstmt.setInt(2, pedidoVenda.getClienteId());
 			pstmt.setFloat(3, pedidoVenda.getValorPedido());
-			pstmt.executeQuery();
+			pstmt.executeUpdate();
 
 			pedidoVenda.setId(Integer.parseInt(pstmt.getGeneratedKeys().toString()));
 		} catch (Exception e) {
