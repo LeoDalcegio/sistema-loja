@@ -95,7 +95,8 @@ public class jdFormPedidoVenda extends JDialog {
 	 * Create the dialog.
 	 */
 	public jdFormPedidoVenda(RequestType requestType, PedidoVenda pedidoVendaEditar) {
-		setModal(true);
+		setModalityType(ModalityType.MODELESS);
+		setModal(false);
 		this.pedidoVendaEditar = pedidoVendaEditar;
 		this.windowRequestType = requestType;
 
@@ -137,7 +138,6 @@ public class jdFormPedidoVenda extends JDialog {
 			cancelButton.setBackground(Color.LIGHT_GRAY);
 			cancelButton.setForeground(Color.BLACK);
 			cancelButton.setBorderPainted(false);
-
 		}
 
 		txtValorPedido = new JTextField();
@@ -189,8 +189,11 @@ public class jdFormPedidoVenda extends JDialog {
 				}
 
 				try {
-					new jdListPedidoItemVenda(jdFormPedidoVenda.this.pedidoVendaEditar.getId())
-							.run(jdFormPedidoVenda.this.pedidoVendaEditar.getId());
+					jdListPedidoItemVenda jd = new jdListPedidoItemVenda(
+							jdFormPedidoVenda.this.pedidoVendaEditar.getId());
+
+					jd.run(jdFormPedidoVenda.this.pedidoVendaEditar.getId());
+
 				} catch (ClassNotFoundException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

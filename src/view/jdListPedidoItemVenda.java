@@ -55,7 +55,7 @@ public class jdListPedidoItemVenda extends JDialog {
 	public jdListPedidoItemVenda(int nrPedido) throws ClassNotFoundException, SQLException {
 		setResizable(false);
 		getContentPane().setForeground(UIManager.getColor("DesktopIcon.background"));
-		setTitle("Pedidos de Compra");
+		setTitle("Itens do Pedido de Venda");
 		getContentPane().setBackground(UIManager.getColor("Desktop.background"));
 		setBackground(Color.WHITE);
 		setBounds(100, 100, 789, 443);
@@ -201,6 +201,8 @@ public class jdListPedidoItemVenda extends JDialog {
 		});
 		btnIncluir.setBounds(439, 386, 105, 27);
 		contentPanel.add(btnIncluir);
+
+		this.toFront();
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {

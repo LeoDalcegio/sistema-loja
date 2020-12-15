@@ -21,10 +21,8 @@ import javax.swing.UIManager;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 
-import controller.PedidoItemVendaController;
 import controller.PedidoVendaController;
 import controller.UsuarioController;
-import dao.PedidoItemVendaDAOImpl;
 import dao.PedidoVendaDAOImpl;
 import enums.RequestType;
 import enums.TipoUsuario;
@@ -124,19 +122,19 @@ public class jdListPedidoVenda extends JDialog {
 				int row = table.getSelectedRow();
 				int id = Integer.parseInt(table.getModel().getValueAt(row, column).toString());
 
-				PedidoItemVendaController pedidoItemVendaController = null;
+				PedidoVendaController pedidoVendaController = null;
 
-				PedidoItemVendaDAOImpl pedidoItemVendaDAOImpl = null;
+				PedidoVendaDAOImpl pedidoVendaDAOImpl = null;
 
 				try {
-					pedidoItemVendaDAOImpl = new PedidoItemVendaDAOImpl();
+					pedidoVendaDAOImpl = new PedidoVendaDAOImpl();
 				} catch (ClassNotFoundException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 
-				pedidoItemVendaController = new PedidoItemVendaController(pedidoItemVendaDAOImpl);
-				pedidoItemVendaController.excluiPedidoItemVenda(id);
+				pedidoVendaController = new PedidoVendaController(pedidoVendaDAOImpl);
+				pedidoVendaController.excluiPedidoVenda(id);
 
 				try {
 					montaList();
@@ -240,8 +238,10 @@ public class jdListPedidoVenda extends JDialog {
 			model.removeRow(i);
 		}
 
+		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
 		for (PedidoVenda pedido : pedidos) {
-			Object[] linha = { pedido.getId(), pedido.getClienteId(), pedido.getDataDaVenda(),
+			Object[] linha = { pedido.getId(), pedido.getClienteId(), formatter.format(pedido.getDataDaVenda()),
 					pedido.getValorPedido() };
 
 			model.addRow(linha);

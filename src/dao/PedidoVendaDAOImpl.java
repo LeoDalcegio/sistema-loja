@@ -5,6 +5,7 @@ import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +25,18 @@ public class PedidoVendaDAOImpl extends BDGenericoDAO implements PedidoVendaDAO 
 
 		try {
 			String sql = "INSERT INTO PedidoVenda " + "(DataDaVenda, ClienteId, ValorPedido)" + "VALUES(?, ?, ?)";
-			pstmt = connection.prepareStatement(sql);
+			pstmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 			pstmt.setDate(1, new java.sql.Date(pedidoVenda.getDataDaVenda().getTime()));
 			pstmt.setInt(2, pedidoVenda.getClienteId());
 			pstmt.setFloat(3, pedidoVenda.getValorPedido());
 			pstmt.executeUpdate();
 
-			pedidoVenda.setId(Integer.parseInt(pstmt.getGeneratedKeys().toString()));
+			ResultSet keys = pstmt.getGeneratedKeys();
+
+			keys.next();
+			int key = keys.getInt(1);
+
+			pedidoVenda.setId(key);
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
