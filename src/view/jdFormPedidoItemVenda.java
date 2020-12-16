@@ -24,6 +24,7 @@ public class jdFormPedidoItemVenda extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private RequestType windowRequestType;
 	private PedidoItemVenda pedidoItemVendaEditar;
+	private int idPedido;
 	private JTextField txtProduto;
 	private JTextField txtValorUnitario;
 	private JTextField txtQuantidade;
@@ -31,12 +32,13 @@ public class jdFormPedidoItemVenda extends JDialog {
 	/**
 	 * Launch the application.
 	 */
-	public void run(RequestType requestType, PedidoItemVenda pedidoItemVendaEditar) {
+	public void run(RequestType requestType, PedidoItemVenda pedidoItemVendaEditar, int idPedido) {
 		try {
 			this.pedidoItemVendaEditar = pedidoItemVendaEditar;
 			this.windowRequestType = requestType;
+			this.idPedido = idPedido;
 
-			jdFormPedidoItemVenda dialog = new jdFormPedidoItemVenda(requestType, pedidoItemVendaEditar);
+			jdFormPedidoItemVenda dialog = new jdFormPedidoItemVenda(requestType, pedidoItemVendaEditar, idPedido);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -47,10 +49,11 @@ public class jdFormPedidoItemVenda extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public jdFormPedidoItemVenda(RequestType requestType, PedidoItemVenda pedidoItemVendaEditar) {
+	public jdFormPedidoItemVenda(RequestType requestType, PedidoItemVenda pedidoItemVendaEditar, int idPedido) {
 		setModal(true);
 		this.pedidoItemVendaEditar = pedidoItemVendaEditar;
 		this.windowRequestType = requestType;
+		this.idPedido = idPedido;
 
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -61,7 +64,6 @@ public class jdFormPedidoItemVenda extends JDialog {
 		if (this.pedidoItemVendaEditar != null) {
 			txtQuantidade.setText(String.valueOf(this.pedidoItemVendaEditar.getQuantidade()));
 			txtValorUnitario.setText(String.valueOf(this.pedidoItemVendaEditar.getValorUnitario()));
-
 		}
 		{
 			JButton okButton = new JButton("Salvar");
@@ -88,6 +90,10 @@ public class jdFormPedidoItemVenda extends JDialog {
 
 					PedidoItemVenda pedidoItemVenda = new PedidoItemVenda();
 					pedidoItemVenda.setId(pedidoItemVenda != null ? pedidoItemVenda.getId() : 0);
+					pedidoItemVenda.setPedidoVendaId(idPedido);
+					pedidoItemVenda.setProdutoId(Integer.parseInt(txtProduto.getText()));
+					pedidoItemVenda.setQuantidade(Float.parseFloat(txtQuantidade.getText()));
+					pedidoItemVenda.setValorUnitario(Float.parseFloat(txtValorUnitario.getText()));
 
 					PedidoItemVendaController pedidoItemVendaController = null;
 

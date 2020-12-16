@@ -29,16 +29,16 @@ public class jdListPedidoItemVenda extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private DefaultTableModel model;
-	private int nrPedido;
+	private int idPedido;
 
 	/**
 	 * Launch the application.
 	 */
-	public void run(int nrPedido) {
+	public void run(int idPedido) {
 		try {
-			this.nrPedido = nrPedido;
+			this.idPedido = idPedido;
 
-			jdListPedidoItemVenda dialog = new jdListPedidoItemVenda(nrPedido);
+			jdListPedidoItemVenda dialog = new jdListPedidoItemVenda(idPedido);
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 		} catch (Exception e) {
@@ -52,7 +52,7 @@ public class jdListPedidoItemVenda extends JDialog {
 	 * @throws SQLException
 	 * @throws ClassNotFoundException
 	 */
-	public jdListPedidoItemVenda(int nrPedido) throws ClassNotFoundException, SQLException {
+	public jdListPedidoItemVenda(int idPedido) throws ClassNotFoundException, SQLException {
 		setResizable(false);
 		getContentPane().setForeground(UIManager.getColor("DesktopIcon.background"));
 		setTitle("Itens do Pedido de Venda");
@@ -167,8 +167,13 @@ public class jdListPedidoItemVenda extends JDialog {
 
 				PedidoItemVenda pedidoItemVenda = new PedidoItemVenda();
 				pedidoItemVenda.setId(id);
+				pedidoItemVenda.setPedidoVendaId(idPedido);
+				pedidoItemVenda.setProdutoId(produtoId);
+				pedidoItemVenda.setQuantidade(quantidade);
+				pedidoItemVenda.setValorUnitario(valorUnitario);
 
-				new jdFormPedidoItemVenda(RequestType.Edit, pedidoItemVenda).run(RequestType.Edit, pedidoItemVenda);
+				new jdFormPedidoItemVenda(RequestType.Edit, pedidoItemVenda, idPedido).run(RequestType.Edit,
+						pedidoItemVenda, idPedido);
 
 				try {
 					montaList();
@@ -189,7 +194,7 @@ public class jdListPedidoItemVenda extends JDialog {
 
 		btnIncluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new jdFormPedidoItemVenda(RequestType.Create, null).run(RequestType.Create, null);
+				new jdFormPedidoItemVenda(RequestType.Create, null, idPedido).run(RequestType.Create, null, idPedido);
 
 				try {
 					montaList();

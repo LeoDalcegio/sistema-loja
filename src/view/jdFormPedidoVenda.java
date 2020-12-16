@@ -83,9 +83,9 @@ public class jdFormPedidoVenda extends JDialog {
 		}
 
 		if (jdFormPedidoVenda.this.windowRequestType == RequestType.Create && this.pedidoVendaEditar == null) {
-			pedidoVendaEditar = pedidoVendaController.salvaPedidoVenda(pedidoVenda);
+			this.pedidoVendaEditar = pedidoVendaController.salvaPedidoVenda(pedidoVenda);
 		} else if (jdFormPedidoVenda.this.windowRequestType == RequestType.Edit) {
-			pedidoVendaEditar = pedidoVendaController.editaPedidoVenda(pedidoVenda);
+			this.pedidoVendaEditar = pedidoVendaController.editaPedidoVenda(pedidoVenda);
 		}
 
 		return false;
@@ -107,9 +107,9 @@ public class jdFormPedidoVenda extends JDialog {
 		contentPanel.setLayout(null);
 
 		if (this.pedidoVendaEditar != null) {
-			txtDataPedidoVenda.setText(this.pedidoVendaEditar.getDataDaVenda().toString());
-			// txtCliente.setText(this.pedidoVendaEditar.getClienteId());
-			// txtValorPedido = 0;
+			// txtDataPedidoVenda.setText(this.pedidoVendaEditar.getDataDaVenda().toString());
+			// txCliente.setText(String.valueOf(this.pedidoVendaEditar.getClienteId()));
+			// txtValorPedido.setText(String.valueOf(this.pedidoVendaEditar.getValorPedido()));
 		}
 		{
 			JButton okButton = new JButton("Salvar");
