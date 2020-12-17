@@ -35,19 +35,6 @@ public class jdListPedidoVenda extends JDialog {
 	private DefaultTableModel model;
 
 	/**
-	 * Launch the application.
-	 */
-	public void run() {
-		try {
-			jdListPedidoVenda dialog = new jdListPedidoVenda();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 * 
 	 * @throws SQLException
@@ -163,7 +150,7 @@ public class jdListPedidoVenda extends JDialog {
 				int id = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
 				int clienteId = Integer.parseInt(table.getModel().getValueAt(row, 1).toString());
 				String dataVenda = table.getModel().getValueAt(row, 2).toString();
-				float valorPedido = Float.parseFloat(table.getModel().getValueAt(row, 3).toString());
+				Float valorPedido = Float.parseFloat(table.getModel().getValueAt(row, 3).toString());
 
 				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -180,7 +167,7 @@ public class jdListPedidoVenda extends JDialog {
 
 				pedidoVenda.setValorPedido(valorPedido);
 
-				new jdFormPedidoVenda(RequestType.Edit, pedidoVenda).run(RequestType.Edit, pedidoVenda);
+				new jdFormPedidoVenda(RequestType.Edit, pedidoVenda);
 
 				try {
 					montaList();
@@ -201,7 +188,7 @@ public class jdListPedidoVenda extends JDialog {
 
 		btnIncluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new jdFormPedidoVenda(RequestType.Create, null).run(RequestType.Create, null);
+				new jdFormPedidoVenda(RequestType.Create, null);
 
 				try {
 					montaList();
@@ -223,6 +210,9 @@ public class jdListPedidoVenda extends JDialog {
 			btnExcluir.setVisible(false);
 			btnIncluir.setBounds(btnExcluir.getBounds());
 		}
+
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setVisible(true);
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {

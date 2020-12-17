@@ -30,22 +30,6 @@ public class jdFormProduto extends JDialog {
 	private JTextField txtPrecoPadrao;
 
 	/**
-	 * Launch the application.
-	 */
-	public void run(RequestType requestType, Produto produtoEditar) {
-		try {
-			this.produtoEditar = produtoEditar;
-			this.windowRequestType = requestType;
-
-			jdFormProduto dialog = new jdFormProduto(requestType, produtoEditar);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 */
 	public jdFormProduto(RequestType requestType, Produto produtoEditar) {
@@ -76,11 +60,30 @@ public class jdFormProduto extends JDialog {
 		txtDescricao.setColumns(10);
 		txtDescricao.setBounds(178, 47, 114, 21);
 
+		txtQuantidadeEstoque = new JTextField();
+		txtQuantidadeEstoque.setColumns(10);
+		txtQuantidadeEstoque.setBounds(178, 79, 114, 21);
+		contentPanel.add(txtQuantidadeEstoque);
+
+		JLabel lblQuantidadeEmEstoque = new JLabel("Quantidade em estoque:");
+		lblQuantidadeEmEstoque.setBounds(12, 81, 162, 17);
+		contentPanel.add(lblQuantidadeEmEstoque);
+
+		txtPrecoPadrao = new JTextField();
+		txtPrecoPadrao.setColumns(10);
+		txtPrecoPadrao.setBounds(178, 112, 114, 21);
+		contentPanel.add(txtPrecoPadrao);
+
+		JLabel lblCpfcnpj_2 = new JLabel("Preço padrão:");
+		lblCpfcnpj_2.setBounds(12, 114, 125, 17);
+		contentPanel.add(lblCpfcnpj_2);
+
 		if (this.produtoEditar != null) {
 			txtCodigoProduto.setText(this.produtoEditar.getCodigoProduto());
 			txtDescricao.setText(this.produtoEditar.getDescricaoProduto());
-			txtPrecoPadrao.setText(String.valueOf(this.produtoEditar.getPrecoPadrao()));
+			txtPrecoPadrao.setText(this.produtoEditar.getPrecoPadrao().toString());
 			txtQuantidadeEstoque.setText(String.valueOf(this.produtoEditar.getQuantidadeEmEstoque()));
+
 		}
 
 		contentPanel.add(txtDescricao);
@@ -148,24 +151,10 @@ public class jdFormProduto extends JDialog {
 			cancelButton.setBounds(352, 236, 86, 27);
 			contentPanel.add(cancelButton);
 			cancelButton.setActionCommand("Cancel");
+
+			this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+			this.setVisible(true);
+
 		}
-
-		txtQuantidadeEstoque = new JTextField();
-		txtQuantidadeEstoque.setColumns(10);
-		txtQuantidadeEstoque.setBounds(178, 79, 114, 21);
-		contentPanel.add(txtQuantidadeEstoque);
-
-		JLabel lblQuantidadeEmEstoque = new JLabel("Quantidade em estoque:");
-		lblQuantidadeEmEstoque.setBounds(12, 81, 162, 17);
-		contentPanel.add(lblQuantidadeEmEstoque);
-
-		txtPrecoPadrao = new JTextField();
-		txtPrecoPadrao.setColumns(10);
-		txtPrecoPadrao.setBounds(178, 112, 114, 21);
-		contentPanel.add(txtPrecoPadrao);
-
-		JLabel lblCpfcnpj_2 = new JLabel("Preço padrão:");
-		lblCpfcnpj_2.setBounds(12, 114, 125, 17);
-		contentPanel.add(lblCpfcnpj_2);
 	}
 }

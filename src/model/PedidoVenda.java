@@ -5,13 +5,13 @@ import java.util.Date;
 public class PedidoVenda extends BaseClass {
 	private Date DataDaVenda;
 	private int ClienteId;
-	private float ValorPedido;
+	private Float ValorPedido;
 
-	public float getValorPedido() {
+	public Float getValorPedido() {
 		return ValorPedido;
 	}
 
-	public void setValorPedido(float valorPedido) {
+	public void setValorPedido(Float valorPedido) {
 		ValorPedido = valorPedido;
 	}
 

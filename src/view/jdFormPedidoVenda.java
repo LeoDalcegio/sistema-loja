@@ -10,6 +10,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -30,22 +31,6 @@ public class jdFormPedidoVenda extends JDialog {
 
 	private JTextField txtValorPedido;
 	private JTextField txCliente;
-
-	/**
-	 * Launch the application.
-	 */
-	public void run(RequestType requestType, PedidoVenda pedidoVendaEditar) {
-		try {
-			this.pedidoVendaEditar = pedidoVendaEditar;
-			this.windowRequestType = requestType;
-
-			jdFormPedidoVenda dialog = new jdFormPedidoVenda(requestType, pedidoVendaEditar);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
 
 	private boolean pocessaSalvar() {
 		if (txtDataPedidoVenda.getText().equals("")) {
@@ -97,6 +82,7 @@ public class jdFormPedidoVenda extends JDialog {
 	public jdFormPedidoVenda(RequestType requestType, PedidoVenda pedidoVendaEditar) {
 		setModalityType(ModalityType.MODELESS);
 		setModal(false);
+
 		this.pedidoVendaEditar = pedidoVendaEditar;
 		this.windowRequestType = requestType;
 
@@ -189,10 +175,7 @@ public class jdFormPedidoVenda extends JDialog {
 				}
 
 				try {
-					jdListPedidoItemVenda jd = new jdListPedidoItemVenda(
-							jdFormPedidoVenda.this.pedidoVendaEditar.getId());
-
-					jd.run(jdFormPedidoVenda.this.pedidoVendaEditar.getId());
+					new jdListPedidoItemVenda(jdFormPedidoVenda.this.pedidoVendaEditar.getId());
 
 				} catch (ClassNotFoundException | SQLException e) {
 					// TODO Auto-generated catch block
@@ -206,5 +189,12 @@ public class jdFormPedidoVenda extends JDialog {
 		btnItens.setActionCommand("OK");
 		btnItens.setBounds(7, 227, 86, 27);
 		contentPanel.add(btnItens);
+
+		JComboBox comboBox = new JComboBox();
+		comboBox.setBounds(93, 76, 114, 26);
+		contentPanel.add(comboBox);
+
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setVisible(true);
 	}
 }

@@ -30,23 +30,6 @@ public class jdFormPedidoItemVenda extends JDialog {
 	private JTextField txtQuantidade;
 
 	/**
-	 * Launch the application.
-	 */
-	public void run(RequestType requestType, PedidoItemVenda pedidoItemVendaEditar, int idPedido) {
-		try {
-			this.pedidoItemVendaEditar = pedidoItemVendaEditar;
-			this.windowRequestType = requestType;
-			this.idPedido = idPedido;
-
-			jdFormPedidoItemVenda dialog = new jdFormPedidoItemVenda(requestType, pedidoItemVendaEditar, idPedido);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 */
 	public jdFormPedidoItemVenda(RequestType requestType, PedidoItemVenda pedidoItemVendaEditar, int idPedido) {
@@ -164,5 +147,8 @@ public class jdFormPedidoItemVenda extends JDialog {
 		txtQuantidade.setColumns(10);
 		txtQuantidade.setBounds(107, 42, 114, 21);
 		contentPanel.add(txtQuantidade);
+
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setVisible(true);
 	}
 }

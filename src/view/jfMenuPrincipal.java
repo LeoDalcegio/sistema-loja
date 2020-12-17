@@ -62,7 +62,7 @@ public class jfMenuPrincipal extends JFrame {
 		btnUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					new jdListUsuario().run();
+					new jdListUsuario();
 				} catch (ClassNotFoundException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -86,7 +86,7 @@ public class jfMenuPrincipal extends JFrame {
 		btnProdutos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					new jdListProduto().run();
+					new jdListProduto();
 				} catch (ClassNotFoundException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -104,7 +104,7 @@ public class jfMenuPrincipal extends JFrame {
 		btnProdutos_1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					new jdListPedidoVenda().run();
+					new jdListPedidoVenda();
 				} catch (ClassNotFoundException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -119,7 +119,7 @@ public class jfMenuPrincipal extends JFrame {
 		btnClientes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				try {
-					new jdListCliente().run();
+					new jdListCliente();
 				} catch (ClassNotFoundException | SQLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -28,22 +28,6 @@ public class jdFormCliente extends JDialog {
 	private Cliente clienteEditar;
 
 	/**
-	 * Launch the application.
-	 */
-	public void run(RequestType requestType, Cliente clienteEditar) {
-		try {
-			this.clienteEditar = clienteEditar;
-			this.windowRequestType = requestType;
-
-			jdFormCliente dialog = new jdFormCliente(requestType, clienteEditar);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 */
 	public jdFormCliente(RequestType requestType, Cliente clienteEditar) {
@@ -143,5 +127,8 @@ public class jdFormCliente extends JDialog {
 			contentPanel.add(cancelButton);
 			cancelButton.setActionCommand("Cancel");
 		}
+
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setVisible(true);
 	}
 }

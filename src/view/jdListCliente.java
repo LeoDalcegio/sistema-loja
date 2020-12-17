@@ -33,19 +33,6 @@ public class jdListCliente extends JDialog {
 	private DefaultTableModel model;
 
 	/**
-	 * Launch the application.
-	 */
-	public void run() {
-		try {
-			jdListCliente dialog = new jdListCliente();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 * 
 	 * @throws SQLException
@@ -163,7 +150,7 @@ public class jdListCliente extends JDialog {
 				cliente.setNome(nome);
 				cliente.setCpf(cpf);
 
-				new jdFormCliente(RequestType.Edit, cliente).run(RequestType.Edit, cliente);
+				new jdFormCliente(RequestType.Edit, cliente);
 
 				try {
 					montaList();
@@ -184,7 +171,7 @@ public class jdListCliente extends JDialog {
 
 		btnIncluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new jdFormCliente(RequestType.Create, null).run(RequestType.Create, null);
+				new jdFormCliente(RequestType.Create, null);
 
 				try {
 					montaList();
@@ -207,6 +194,9 @@ public class jdListCliente extends JDialog {
 
 			btnIncluir.setBounds(btnExcluir.getBounds());
 		}
+
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setVisible(true);
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {

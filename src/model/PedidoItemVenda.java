@@ -3,8 +3,8 @@ package model;
 public class PedidoItemVenda extends BaseClass {
 	private int PedidoVendaId;
 	private int ProdutoId;
-	private float Quantidade;
-	private float ValorUnitario;
+	private Float Quantidade;
+	private Float ValorUnitario;
 
 	public int getPedidoVendaId() {
 		return PedidoVendaId;
@@ -22,19 +22,19 @@ public class PedidoItemVenda extends BaseClass {
 		ProdutoId = produtoId;
 	}
 
-	public float getQuantidade() {
+	public Float getQuantidade() {
 		return Quantidade;
 	}
 
-	public void setQuantidade(float quantidade) {
+	public void setQuantidade(Float quantidade) {
 		Quantidade = quantidade;
 	}
 
-	public float getValorUnitario() {
+	public Float getValorUnitario() {
 		return ValorUnitario;
 	}
 
-	public void setValorUnitario(float valorUnitario) {
+	public void setValorUnitario(Float valorUnitario) {
 		ValorUnitario = valorUnitario;
 	}
 

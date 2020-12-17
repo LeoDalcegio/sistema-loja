@@ -29,22 +29,6 @@ public class jdFormUsuario extends JDialog {
 	private Usuario usuarioEditar;
 
 	/**
-	 * Launch the application.
-	 */
-	public void run(RequestType requestType, Usuario usuarioEditar) {
-		try {
-			this.usuarioEditar = usuarioEditar;
-			this.windowRequestType = requestType;
-
-			jdFormUsuario dialog = new jdFormUsuario(requestType, usuarioEditar);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 */
 	public jdFormUsuario(RequestType requestType, Usuario usuarioEditar) {
@@ -144,5 +128,8 @@ public class jdFormUsuario extends JDialog {
 		JLabel lblQuantidadeEmEstoque = new JLabel("Tipo:");
 		lblQuantidadeEmEstoque.setBounds(12, 81, 60, 17);
 		contentPanel.add(lblQuantidadeEmEstoque);
+
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setVisible(true);
 	}
 }

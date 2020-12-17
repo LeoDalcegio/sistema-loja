@@ -33,19 +33,6 @@ public class jdListProduto extends JDialog {
 	private DefaultTableModel model;
 
 	/**
-	 * Launch the application.
-	 */
-	public void run() {
-		try {
-			jdListProduto dialog = new jdListProduto();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 * 
 	 * @throws SQLException
@@ -158,8 +145,8 @@ public class jdListProduto extends JDialog {
 				int id = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
 				String codigoProduto = table.getModel().getValueAt(row, 1).toString();
 				String descricaoProduto = table.getModel().getValueAt(row, 2).toString();
-				double quantidadeEmEstoque = Double.parseDouble(table.getModel().getValueAt(row, 3).toString());
-				double precoPadrao = Double.parseDouble(table.getModel().getValueAt(row, 4).toString());
+				Float quantidadeEmEstoque = Float.parseFloat(table.getModel().getValueAt(row, 3).toString());
+				Float precoPadrao = Float.parseFloat(table.getModel().getValueAt(row, 4).toString());
 
 				Produto produto = new Produto();
 				produto.setId(id);
@@ -168,7 +155,7 @@ public class jdListProduto extends JDialog {
 				produto.setQuantidadeEmEstoque(quantidadeEmEstoque);
 				produto.setPrecoPadrao(precoPadrao);
 
-				new jdFormProduto(RequestType.Edit, produto).run(RequestType.Edit, produto);
+				new jdFormProduto(RequestType.Edit, produto);
 
 				try {
 					montaList();
@@ -189,7 +176,7 @@ public class jdListProduto extends JDialog {
 
 		btnIncluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new jdFormProduto(RequestType.Create, null).run(RequestType.Create, null);
+				new jdFormProduto(RequestType.Create, null);
 
 				try {
 					montaList();
@@ -211,6 +198,9 @@ public class jdListProduto extends JDialog {
 			btnExcluir.setVisible(false);
 			btnIncluir.setBounds(btnExcluir.getBounds());
 		}
+
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setVisible(true);
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {

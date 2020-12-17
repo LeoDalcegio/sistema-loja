@@ -83,8 +83,9 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, produtoObjeto.getCodigoProduto());
 			pstmt.setString(2, produtoObjeto.getDescricaoProduto());
-			pstmt.setDouble(3, produtoObjeto.getQuantidadeEmEstoque());
-			pstmt.setDouble(4, produtoObjeto.getPrecoPadrao());
+			pstmt.setFloat(3, produtoObjeto.getQuantidadeEmEstoque());
+			pstmt.setFloat(4, produtoObjeto.getPrecoPadrao());
+			pstmt.setInt(5, produtoObjeto.getId());
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();

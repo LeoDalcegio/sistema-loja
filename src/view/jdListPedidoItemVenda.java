@@ -32,21 +32,6 @@ public class jdListPedidoItemVenda extends JDialog {
 	private int idPedido;
 
 	/**
-	 * Launch the application.
-	 */
-	public void run(int idPedido) {
-		try {
-			this.idPedido = idPedido;
-
-			jdListPedidoItemVenda dialog = new jdListPedidoItemVenda(idPedido);
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
-	/**
 	 * Create the dialog.
 	 * 
 	 * @throws SQLException
@@ -162,8 +147,8 @@ public class jdListPedidoItemVenda extends JDialog {
 				int row = table.getSelectedRow();
 				int id = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
 				int produtoId = Integer.parseInt(table.getModel().getValueAt(row, 2).toString());
-				float quantidade = Float.parseFloat(table.getModel().getValueAt(row, 3).toString());
-				float valorUnitario = Float.parseFloat(table.getModel().getValueAt(row, 4).toString());
+				Float quantidade = Float.parseFloat(table.getModel().getValueAt(row, 3).toString());
+				Float valorUnitario = Float.parseFloat(table.getModel().getValueAt(row, 4).toString());
 
 				PedidoItemVenda pedidoItemVenda = new PedidoItemVenda();
 				pedidoItemVenda.setId(id);
@@ -172,8 +157,7 @@ public class jdListPedidoItemVenda extends JDialog {
 				pedidoItemVenda.setQuantidade(quantidade);
 				pedidoItemVenda.setValorUnitario(valorUnitario);
 
-				new jdFormPedidoItemVenda(RequestType.Edit, pedidoItemVenda, idPedido).run(RequestType.Edit,
-						pedidoItemVenda, idPedido);
+				new jdFormPedidoItemVenda(RequestType.Edit, pedidoItemVenda, idPedido);
 
 				try {
 					montaList();
@@ -194,7 +178,7 @@ public class jdListPedidoItemVenda extends JDialog {
 
 		btnIncluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				new jdFormPedidoItemVenda(RequestType.Create, null, idPedido).run(RequestType.Create, null, idPedido);
+				new jdFormPedidoItemVenda(RequestType.Create, null, idPedido);
 
 				try {
 					montaList();
@@ -208,6 +192,9 @@ public class jdListPedidoItemVenda extends JDialog {
 		contentPanel.add(btnIncluir);
 
 		this.toFront();
+
+		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+		this.setVisible(true);
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {
