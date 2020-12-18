@@ -12,4 +12,8 @@ public interface ProdutoDAO {
 	public Produto editaProduto(Produto produtoObjeto);
 
 	public void excluiProduto(int produtoId);
+
+	public Produto getProdutoById(int produtoId);
+
+	public Produto getProdutoByCodigoDeBarras(String codigoDeBarras);
 }

@@ -27,4 +27,8 @@ public class ClienteController {
 	public void excluiCliente(int clienteId) {
 		this.clienteDAO.excluiCliente(clienteId);
 	}
+
+	public Cliente getClienteById(int clienteId) {
+		return this.clienteDAO.getClienteById(clienteId);
+	}
 }

@@ -12,4 +12,6 @@ public interface PedidoVendaDAO {
 	public PedidoVenda editaPedidoVenda(PedidoVenda pedidoVendaObjeto);
 
 	public void excluiPedidoVenda(int pedidoVendaId);
+
+	public PedidoVenda getPedidoVendaById(int pedidoVendaId);
 }

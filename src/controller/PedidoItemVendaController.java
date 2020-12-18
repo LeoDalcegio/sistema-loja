@@ -12,8 +12,8 @@ public class PedidoItemVendaController {
 		this.pedidoItemVendaDAO = pedidoItemVendaDAO;
 	}
 
-	public List<PedidoItemVenda> getAllPedidosItemVenda() {
-		return this.pedidoItemVendaDAO.getAllPedidoItemVenda();
+	public List<PedidoItemVenda> getAllPedidosItemVenda(int idPedido) {
+		return this.pedidoItemVendaDAO.getAllPedidoItemVenda(idPedido);
 	}
 
 	public void salvaPedidoItemVenda(PedidoItemVenda pedidoItemVenda) {
@@ -26,5 +26,9 @@ public class PedidoItemVendaController {
 
 	public void excluiPedidoItemVenda(int pedidoItemVendaId) {
 		this.pedidoItemVendaDAO.excluiPedidoItemVenda(pedidoItemVendaId);
+	}
+
+	public PedidoItemVenda getPedidoItemVendaById(int pedidoItemVendaId) {
+		return this.pedidoItemVendaDAO.getPedidoItemVendaById(pedidoItemVendaId);
 	}
 }

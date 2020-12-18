@@ -133,15 +133,12 @@ public class jdListUsuario extends JDialog {
 					return;
 				}
 
-				int row = table.getSelectedRow();
-				int id = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
-				String login = table.getModel().getValueAt(row, 1).toString();
-				TipoUsuario tipoUsuario = TipoUsuario.valueOf(table.getModel().getValueAt(row, 2).toString());
+				UsuarioController usuarioController = UsuarioController.getInstance();
 
-				Usuario usuario = new Usuario();
-				usuario.setId(id);
-				usuario.setLogin(login);
-				usuario.setTipo(tipoUsuario);
+				int row = table.getSelectedRow();
+				int usuarioId = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
+
+				Usuario usuario = usuarioController.getUsuarioById(usuarioId);
 
 				new jdFormUsuario(RequestType.Edit, usuario);
 

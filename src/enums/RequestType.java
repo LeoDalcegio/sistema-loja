@@ -1,7 +1,7 @@
 package enums;
 
 public enum RequestType {
-	Edit(1), Create(2), Delete(3);
+	Edit(1), Create(2), Delete(3), View(4);
 
 	private final int value;
 

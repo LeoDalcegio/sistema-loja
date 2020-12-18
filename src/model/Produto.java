@@ -5,8 +5,17 @@ public class Produto extends BaseClass {
 	private String descricaoProduto;
 	private Float quantidadeEmEstoque;
 	private Float precoPadrao;
+	private String codigoBarra;
+
+	public String getCodigoBarra() {
+		return codigoBarra;
+	}
 
 	public Produto() {
+	}
+
+	public void setCodigoBarra(String codigoBarra) {
+		this.codigoBarra = codigoBarra;
 	}
 
 	public String getCodigoProduto() {

@@ -5,6 +5,15 @@ public class PedidoItemVenda extends BaseClass {
 	private int ProdutoId;
 	private Float Quantidade;
 	private Float ValorUnitario;
+	private Produto produto;
+
+	public Produto getProduto() {
+		return produto;
+	}
+
+	public void setProduto(Produto produto) {
+		this.produto = produto;
+	}
 
 	public int getPedidoVendaId() {
 		return PedidoVendaId;

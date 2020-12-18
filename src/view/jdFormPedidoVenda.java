@@ -8,6 +8,8 @@ import java.awt.event.WindowEvent;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -17,10 +19,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
+import controller.ClienteController;
 import controller.PedidoVendaController;
+import dao.ClienteDAOImpl;
 import dao.PedidoVendaDAOImpl;
 import enums.RequestType;
+import model.Cliente;
 import model.PedidoVenda;
+import util.DefaultComboItem;
 
 public class jdFormPedidoVenda extends JDialog {
 
@@ -28,9 +34,9 @@ public class jdFormPedidoVenda extends JDialog {
 	private JTextField txtDataPedidoVenda;
 	private RequestType windowRequestType;
 	private PedidoVenda pedidoVendaEditar;
-
-	private JTextField txtValorPedido;
-	private JTextField txCliente;
+	private JComboBox<String> comboBox;
+	private HashMap<String, Integer> map;
+	private PedidoVendaController pedidoVendaController;
 
 	private boolean pocessaSalvar() {
 		if (txtDataPedidoVenda.getText().equals("")) {
@@ -38,14 +44,8 @@ public class jdFormPedidoVenda extends JDialog {
 			return true;
 		}
 
-		if (txCliente.getText().equals("")) {
-			txCliente.requestFocus();
-			return true;
-		}
-
 		PedidoVenda pedidoVenda = new PedidoVenda();
-		pedidoVenda.setId(pedidoVenda != null ? pedidoVenda.getId() : 0);
-		pedidoVenda.setClienteId(Integer.parseInt(txCliente.getText()));
+		pedidoVenda.setId(this.pedidoVendaEditar != null ? this.pedidoVendaEditar.getId() : 0);
 
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
@@ -56,16 +56,8 @@ public class jdFormPedidoVenda extends JDialog {
 			e1.printStackTrace();
 		}
 
-		PedidoVendaController pedidoVendaController = null;
-
-		try {
-			PedidoVendaDAOImpl pedidoVendaDAOImpl = new PedidoVendaDAOImpl();
-
-			pedidoVendaController = new PedidoVendaController(pedidoVendaDAOImpl);
-		} catch (ClassNotFoundException | SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		int clienteId = (int) map.get(comboBox.getSelectedItem().toString());
+		pedidoVenda.setClienteId(clienteId);
 
 		if (jdFormPedidoVenda.this.windowRequestType == RequestType.Create && this.pedidoVendaEditar == null) {
 			this.pedidoVendaEditar = pedidoVendaController.salvaPedidoVenda(pedidoVenda);
@@ -86,17 +78,16 @@ public class jdFormPedidoVenda extends JDialog {
 		this.pedidoVendaEditar = pedidoVendaEditar;
 		this.windowRequestType = requestType;
 
+		PedidoVendaDAOImpl pedidoVendaDAOImpl = new PedidoVendaDAOImpl();
+
+		pedidoVendaController = new PedidoVendaController(pedidoVendaDAOImpl);
+
 		setBounds(100, 100, 579, 286);
 		getContentPane().setLayout(new BorderLayout());
 		contentPanel.setBorder(new EmptyBorder(5, 5, 5, 5));
 		getContentPane().add(contentPanel, BorderLayout.CENTER);
 		contentPanel.setLayout(null);
 
-		if (this.pedidoVendaEditar != null) {
-			// txtDataPedidoVenda.setText(this.pedidoVendaEditar.getDataDaVenda().toString());
-			// txCliente.setText(String.valueOf(this.pedidoVendaEditar.getClienteId()));
-			// txtValorPedido.setText(String.valueOf(this.pedidoVendaEditar.getValorPedido()));
-		}
 		{
 			JButton okButton = new JButton("Salvar");
 			okButton.setForeground(Color.BLACK);
@@ -126,15 +117,6 @@ public class jdFormPedidoVenda extends JDialog {
 			cancelButton.setBorderPainted(false);
 		}
 
-		txtValorPedido = new JTextField();
-		txtValorPedido.setColumns(10);
-		txtValorPedido.setBounds(93, 151, 114, 21);
-		contentPanel.add(txtValorPedido);
-
-		JLabel lblValorTotal = new JLabel("Valor Total:");
-		lblValorTotal.setBounds(12, 153, 81, 17);
-		contentPanel.add(lblValorTotal);
-
 		JButton cancelButton = new JButton("Cancelar");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -148,11 +130,6 @@ public class jdFormPedidoVenda extends JDialog {
 		cancelButton.setActionCommand("Cancel");
 		cancelButton.setBounds(480, 227, 86, 27);
 		contentPanel.add(cancelButton);
-
-		txCliente = new JTextField();
-		txCliente.setBounds(93, 43, 114, 21);
-		contentPanel.add(txCliente);
-		txCliente.setColumns(10);
 
 		JLabel lblCliente = new JLabel("Cliente:");
 		lblCliente.setBounds(10, 45, 60, 17);
@@ -190,11 +167,55 @@ public class jdFormPedidoVenda extends JDialog {
 		btnItens.setBounds(7, 227, 86, 27);
 		contentPanel.add(btnItens);
 
-		JComboBox comboBox = new JComboBox();
-		comboBox.setBounds(93, 76, 114, 26);
+		comboBox = new JComboBox<String>();
+		comboBox.setBackground(Color.WHITE);
+		comboBox.setBounds(93, 40, 219, 21);
 		contentPanel.add(comboBox);
+
+		this.BindCompo();
+
+		if (this.pedidoVendaEditar != null) {
+
+			SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
+
+			txtDataPedidoVenda.setText(formatter.format(this.pedidoVendaEditar.getDataDaVenda()));
+
+			comboBox.setSelectedItem(this.pedidoVendaEditar.getCliente().getNome());
+		}
 
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 		this.setVisible(true);
+	}
+
+	private void BindCompo() {
+		try {
+			this.map = this.populateCombo();
+		} catch (ClassNotFoundException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		for (String s : this.map.keySet()) {
+			comboBox.addItem(s);
+		}
+	}
+
+	private HashMap<String, Integer> populateCombo() throws ClassNotFoundException, SQLException {
+		HashMap<String, Integer> map = new HashMap<String, Integer>();
+
+		ClienteDAOImpl clienteDAOImpl = new ClienteDAOImpl();
+
+		ClienteController clienteController = new ClienteController(clienteDAOImpl);
+
+		List<Cliente> clientes = clienteController.getAllClientes();
+
+		DefaultComboItem cmi;
+
+		for (Cliente cliente : clientes) {
+			cmi = new DefaultComboItem(cliente.getId(), cliente.getNome());
+			map.put(cmi.getDescricao(), cmi.getId());
+		}
+
+		return map;
 	}
 }

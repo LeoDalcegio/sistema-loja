@@ -56,6 +56,44 @@ public class UsuarioDAOImpl extends BDGenericoDAO implements UsuarioDAO {
 		}
 	}
 
+	public Usuario getUsuarioById(int usuarioId) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			this.connection = getConnection("sistema-loja");
+
+			String sql = "SELECT * " + "FROM Usuario WHERE Id = ?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setInt(1, usuarioId);
+			rs = pstmt.executeQuery();
+
+			Usuario usuario = new Usuario();
+
+			if (rs.next()) {
+				usuario.setId(rs.getInt("Id"));
+				usuario.setLogin(rs.getString("Login"));
+
+				if (rs.getInt("Tipo") == TipoUsuario.Administrador.getValue()) {
+					usuario.setTipo(TipoUsuario.Administrador);
+				} else {
+					usuario.setTipo(TipoUsuario.Funcionario);
+				}
+			}
+
+			return usuario;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return null;
+		} finally {
+			close(rs);
+
+			close(connection);
+		}
+	}
+
 	@Override
 	public void salvaUsuario(Usuario usuario) {
 		PreparedStatement pstmt = null;

@@ -27,4 +27,12 @@ public class ProdutoController {
 	public void excluiProduto(int produtoId) {
 		this.produtoDAO.excluiProduto(produtoId);
 	}
+
+	public Produto getProdutoById(int produtoId) {
+		return this.produtoDAO.getProdutoById(produtoId);
+	}
+
+	public Produto getProdutoByCodigoDeBarras(String codigoDeBarras) {
+		return this.produtoDAO.getProdutoByCodigoDeBarras(codigoDeBarras);
+	}
 }

@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -28,6 +27,7 @@ public class jdFormProduto extends JDialog {
 	private Produto produtoEditar;
 	private JTextField txtQuantidadeEstoque;
 	private JTextField txtPrecoPadrao;
+	private JTextField txtCodigoBarra;
 
 	/**
 	 * Create the dialog.
@@ -78,12 +78,24 @@ public class jdFormProduto extends JDialog {
 		lblCpfcnpj_2.setBounds(12, 114, 125, 17);
 		contentPanel.add(lblCpfcnpj_2);
 
+		txtCodigoBarra = new JTextField();
+		txtCodigoBarra.setColumns(10);
+		txtCodigoBarra.setBounds(178, 145, 114, 21);
+		contentPanel.add(txtCodigoBarra);
+
 		if (this.produtoEditar != null) {
 			txtCodigoProduto.setText(this.produtoEditar.getCodigoProduto());
 			txtDescricao.setText(this.produtoEditar.getDescricaoProduto());
 			txtPrecoPadrao.setText(this.produtoEditar.getPrecoPadrao().toString());
 			txtQuantidadeEstoque.setText(String.valueOf(this.produtoEditar.getQuantidadeEmEstoque()));
 
+			var codBarra = this.produtoEditar.getCodigoBarra();
+
+			if (codBarra != null) {
+				txtCodigoBarra.setText(codBarra.toString());
+			} else {
+				txtCodigoBarra.setText("");
+			}
 		}
 
 		contentPanel.add(txtDescricao);
@@ -111,17 +123,13 @@ public class jdFormProduto extends JDialog {
 					produto.setDescricaoProduto(txtDescricao.getText());
 					produto.setPrecoPadrao(Float.parseFloat(txtPrecoPadrao.getText()));
 					produto.setQuantidadeEmEstoque(Float.parseFloat(txtQuantidadeEstoque.getText()));
+					produto.setCodigoBarra(txtCodigoBarra.getText());
 
 					ProdutoController produtoController = null;
 
-					try {
-						ProdutoDAOImpl produtoDAOImpl = new ProdutoDAOImpl();
+					ProdutoDAOImpl produtoDAOImpl = new ProdutoDAOImpl();
 
-						produtoController = new ProdutoController(produtoDAOImpl);
-					} catch (ClassNotFoundException | SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
+					produtoController = new ProdutoController(produtoDAOImpl);
 
 					if (jdFormProduto.this.windowRequestType == RequestType.Create) {
 						produtoController.salvaPrduto(produto);
@@ -151,6 +159,10 @@ public class jdFormProduto extends JDialog {
 			cancelButton.setBounds(352, 236, 86, 27);
 			contentPanel.add(cancelButton);
 			cancelButton.setActionCommand("Cancel");
+
+			JLabel lblCpfcnpj_2_1 = new JLabel("Código de Barras:");
+			lblCpfcnpj_2_1.setBounds(12, 147, 125, 17);
+			contentPanel.add(lblCpfcnpj_2_1);
 
 			this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			this.setVisible(true);

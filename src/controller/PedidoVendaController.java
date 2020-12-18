@@ -27,4 +27,8 @@ public class PedidoVendaController {
 	public void excluiPedidoVenda(int pedidoVendaId) {
 		this.pedidoVendaDAO.excluiPedidoVenda(pedidoVendaId);
 	}
+
+	public PedidoVenda getPedidoVendaById(int pedidoVendaId) {
+		return this.pedidoVendaDAO.getPedidoVendaById(pedidoVendaId);
+	}
 }

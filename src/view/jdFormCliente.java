@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
-import java.sql.SQLException;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
@@ -26,6 +25,7 @@ public class jdFormCliente extends JDialog {
 	private JTextField txtCpfCnpj;
 	private RequestType windowRequestType;
 	private Cliente clienteEditar;
+	private ClienteController clienteController;
 
 	/**
 	 * Create the dialog.
@@ -34,6 +34,10 @@ public class jdFormCliente extends JDialog {
 		setModal(true);
 		this.clienteEditar = clienteEditar;
 		this.windowRequestType = requestType;
+
+		ClienteDAOImpl clienteDAOImpl = new ClienteDAOImpl();
+
+		clienteController = new ClienteController(clienteDAOImpl);
 
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -86,17 +90,6 @@ public class jdFormCliente extends JDialog {
 					cliente.setId(clienteEditar != null ? clienteEditar.getId() : 0);
 					cliente.setNome(txtNome.getText());
 					cliente.setCpf(txtCpfCnpj.getText());
-
-					ClienteController clienteController = null;
-
-					try {
-						ClienteDAOImpl clienteDAOImpl = new ClienteDAOImpl();
-
-						clienteController = new ClienteController(clienteDAOImpl);
-					} catch (ClassNotFoundException | SQLException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
 
 					if (jdFormCliente.this.windowRequestType == RequestType.Create) {
 						clienteController.salvaCliente(cliente);

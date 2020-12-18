@@ -7,7 +7,6 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
@@ -33,6 +32,7 @@ public class jdListPedidoVenda extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private DefaultTableModel model;
+	private PedidoVendaController pedidoVendaController;
 
 	/**
 	 * Create the dialog.
@@ -41,6 +41,12 @@ public class jdListPedidoVenda extends JDialog {
 	 * @throws ClassNotFoundException
 	 */
 	public jdListPedidoVenda() throws ClassNotFoundException, SQLException {
+		PedidoVendaDAOImpl pedidoVendaDAOImpl = null;
+
+		pedidoVendaDAOImpl = new PedidoVendaDAOImpl();
+
+		this.pedidoVendaController = new PedidoVendaController(pedidoVendaDAOImpl);
+
 		setResizable(false);
 		getContentPane().setForeground(UIManager.getColor("DesktopIcon.background"));
 		setTitle("Pedidos de Compra");
@@ -65,19 +71,17 @@ public class jdListPedidoVenda extends JDialog {
 				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 				table.setShowVerticalLines(false);
 				table.setBackground(UIManager.getColor("Desktop.background"));
-				table.setModel(
-						new DefaultTableModel(new Object[][] {}, new String[] { "Id", "Cliente", "Data", "Valor" }) {
-							boolean[] columnEditables = new boolean[] { false, false, false, false };
+				table.setModel(new DefaultTableModel(new Object[][] {}, new String[] { "Id", "Cliente", "Data" }) {
+					boolean[] columnEditables = new boolean[] { false, false, false };
 
-							public boolean isCellEditable(int row, int column) {
-								return columnEditables[column];
-							}
-						});
+					public boolean isCellEditable(int row, int column) {
+						return columnEditables[column];
+					}
+				});
 				table.getColumnModel().getColumn(0).setPreferredWidth(70);
 				table.getColumnModel().getColumn(0).setMaxWidth(70);
 				table.getColumnModel().getColumn(1).setPreferredWidth(106);
 				table.getColumnModel().getColumn(2).setPreferredWidth(94);
-				table.getColumnModel().getColumn(3).setPreferredWidth(90);
 
 				table.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 12));
 				table.getTableHeader().setBackground(new Color(32, 163, 203));
@@ -109,18 +113,6 @@ public class jdListPedidoVenda extends JDialog {
 				int row = table.getSelectedRow();
 				int id = Integer.parseInt(table.getModel().getValueAt(row, column).toString());
 
-				PedidoVendaController pedidoVendaController = null;
-
-				PedidoVendaDAOImpl pedidoVendaDAOImpl = null;
-
-				try {
-					pedidoVendaDAOImpl = new PedidoVendaDAOImpl();
-				} catch (ClassNotFoundException | SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				pedidoVendaController = new PedidoVendaController(pedidoVendaDAOImpl);
 				pedidoVendaController.excluiPedidoVenda(id);
 
 				try {
@@ -147,25 +139,9 @@ public class jdListPedidoVenda extends JDialog {
 				}
 
 				int row = table.getSelectedRow();
-				int id = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
-				int clienteId = Integer.parseInt(table.getModel().getValueAt(row, 1).toString());
-				String dataVenda = table.getModel().getValueAt(row, 2).toString();
-				Float valorPedido = Float.parseFloat(table.getModel().getValueAt(row, 3).toString());
+				int pedidoVendaId = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
 
-				SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-
-				PedidoVenda pedidoVenda = new PedidoVenda();
-				pedidoVenda.setId(id);
-				pedidoVenda.setClienteId(clienteId);
-
-				try {
-					pedidoVenda.setDataDaVenda(formatter.parse(dataVenda));
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				pedidoVenda.setValorPedido(valorPedido);
+				PedidoVenda pedidoVenda = pedidoVendaController.getPedidoVendaById(pedidoVendaId);
 
 				new jdFormPedidoVenda(RequestType.Edit, pedidoVenda);
 
@@ -201,6 +177,32 @@ public class jdListPedidoVenda extends JDialog {
 		btnIncluir.setBounds(439, 386, 105, 27);
 		contentPanel.add(btnIncluir);
 
+		JButton btnVisualizar = new JButton("Itens");
+		btnVisualizar.setVisible(false);
+		btnVisualizar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				if (table.getSelectionModel().isSelectionEmpty()) {
+					return;
+				}
+
+				int row = table.getSelectedRow();
+				int pedidoVendaId = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
+
+				try {
+					new jdListPedidoItemVenda(pedidoVendaId);
+				} catch (ClassNotFoundException | SQLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		});
+		btnVisualizar.setForeground(Color.BLACK);
+		btnVisualizar.setFont(new Font("Dialog", Font.BOLD, 12));
+		btnVisualizar.setBorderPainted(false);
+		btnVisualizar.setBackground(Color.ORANGE);
+		btnVisualizar.setBounds(4, 386, 105, 27);
+		contentPanel.add(btnVisualizar);
+
 		UsuarioController usuarioController = UsuarioController.getInstance();
 
 		TipoUsuario tipoUsuario = usuarioController.getUsuarioLogado().getTipo();
@@ -209,6 +211,7 @@ public class jdListPedidoVenda extends JDialog {
 			btnEditar.setVisible(false);
 			btnExcluir.setVisible(false);
 			btnIncluir.setBounds(btnExcluir.getBounds());
+			btnVisualizar.setVisible(true);
 		}
 
 		this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
@@ -216,11 +219,7 @@ public class jdListPedidoVenda extends JDialog {
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {
-		PedidoVendaDAOImpl pedidoVendaDAOImpl = new PedidoVendaDAOImpl();
-
-		PedidoVendaController pedidoVendaController = new PedidoVendaController(pedidoVendaDAOImpl);
-
-		List<PedidoVenda> pedidos = pedidoVendaController.getAllPedidosVenda();
+		List<PedidoVenda> pedidos = this.pedidoVendaController.getAllPedidosVenda();
 
 		int rowCount = model.getRowCount();
 
@@ -231,8 +230,8 @@ public class jdListPedidoVenda extends JDialog {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
 
 		for (PedidoVenda pedido : pedidos) {
-			Object[] linha = { pedido.getId(), pedido.getClienteId(), formatter.format(pedido.getDataDaVenda()),
-					pedido.getValorPedido() };
+			Object[] linha = { pedido.getId(), pedido.getCliente().getNome(),
+					formatter.format(pedido.getDataDaVenda()) };
 
 			model.addRow(linha);
 		}

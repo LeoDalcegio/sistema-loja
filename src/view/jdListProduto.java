@@ -31,6 +31,7 @@ public class jdListProduto extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private DefaultTableModel model;
+	private ProdutoController produtoController;
 
 	/**
 	 * Create the dialog.
@@ -39,6 +40,12 @@ public class jdListProduto extends JDialog {
 	 * @throws ClassNotFoundException
 	 */
 	public jdListProduto() throws ClassNotFoundException, SQLException {
+		ProdutoDAOImpl produtoDAOImpl = null;
+
+		produtoDAOImpl = new ProdutoDAOImpl();
+
+		this.produtoController = new ProdutoController(produtoDAOImpl);
+
 		setResizable(false);
 		getContentPane().setForeground(UIManager.getColor("DesktopIcon.background"));
 		setTitle("Produtos");
@@ -104,18 +111,6 @@ public class jdListProduto extends JDialog {
 				int row = table.getSelectedRow();
 				int id = Integer.parseInt(table.getModel().getValueAt(row, column).toString());
 
-				ProdutoController produtoController = null;
-
-				ProdutoDAOImpl produtoDAOImpl = null;
-
-				try {
-					produtoDAOImpl = new ProdutoDAOImpl();
-				} catch (ClassNotFoundException | SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				produtoController = new ProdutoController(produtoDAOImpl);
 				produtoController.excluiProduto(id);
 
 				try {
@@ -142,18 +137,9 @@ public class jdListProduto extends JDialog {
 				}
 
 				int row = table.getSelectedRow();
-				int id = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
-				String codigoProduto = table.getModel().getValueAt(row, 1).toString();
-				String descricaoProduto = table.getModel().getValueAt(row, 2).toString();
-				Float quantidadeEmEstoque = Float.parseFloat(table.getModel().getValueAt(row, 3).toString());
-				Float precoPadrao = Float.parseFloat(table.getModel().getValueAt(row, 4).toString());
+				int produtoId = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
 
-				Produto produto = new Produto();
-				produto.setId(id);
-				produto.setCodigoProduto(codigoProduto);
-				produto.setDescricaoProduto(descricaoProduto);
-				produto.setQuantidadeEmEstoque(quantidadeEmEstoque);
-				produto.setPrecoPadrao(precoPadrao);
+				Produto produto = produtoController.getProdutoById(produtoId);
 
 				new jdFormProduto(RequestType.Edit, produto);
 
@@ -204,10 +190,6 @@ public class jdListProduto extends JDialog {
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {
-		ProdutoDAOImpl produtoDAOImpl = new ProdutoDAOImpl();
-
-		ProdutoController produtoController = new ProdutoController(produtoDAOImpl);
-
 		List<Produto> produtos = produtoController.getAllProdutos();
 
 		int rowCount = model.getRowCount();

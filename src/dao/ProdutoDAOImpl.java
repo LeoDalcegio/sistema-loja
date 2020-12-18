@@ -13,8 +13,8 @@ import model.Produto;
 public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 	private Connection connection = null;
 
-	public ProdutoDAOImpl() throws SQLException, ClassNotFoundException {
-		this.connection = getConnection("sistema-loja");
+	public ProdutoDAOImpl() {
+
 	}
 
 	@Override
@@ -22,6 +22,13 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		List<Produto> lstProdutos = new ArrayList<Produto>();
+
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		try {
 			String sql = "SELECT * " + "FROM Produto";
@@ -35,6 +42,7 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 				produto.setDescricaoProduto(rs.getString("DescricaoProduto"));
 				produto.setQuantidadeEmEstoque(Float.parseFloat(rs.getString("QuantidadeEmEstoque")));
 				produto.setPrecoPadrao(Float.parseFloat(rs.getString("PrecoPadrao")));
+				produto.setCodigoBarra(rs.getString("CodigoBarra"));
 				lstProdutos.add(produto);
 			}
 
@@ -51,17 +59,68 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 	}
 
 	@Override
+	public Produto getProdutoById(int produtoId) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			String sql = "SELECT * " + "FROM Produto WHERE Id = ?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setInt(1, produtoId);
+			rs = pstmt.executeQuery();
+
+			Produto produto = new Produto();
+
+			if (rs.next()) {
+				produto.setId(Integer.parseInt(rs.getString("Id")));
+				produto.setCodigoProduto(rs.getString("CodigoProduto"));
+				produto.setDescricaoProduto(rs.getString("DescricaoProduto"));
+				produto.setQuantidadeEmEstoque(Float.parseFloat(rs.getString("QuantidadeEmEstoque")));
+				produto.setPrecoPadrao(Float.parseFloat(rs.getString("PrecoPadrao")));
+				produto.setCodigoBarra(rs.getString("CodigoBarra"));
+			}
+
+			return produto;
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return null;
+		} finally {
+			close(rs);
+
+			close(connection);
+		}
+	}
+
+	@Override
 	public void salvaProduto(Produto produto) {
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "INSERT INTO Produto " + "(CodigoProduto, DescricaoProduto, QuantidadeEmEstoque, PrecoPadrao)"
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			String sql = "INSERT INTO Produto "
+					+ "(CodigoProduto, DescricaoProduto, QuantidadeEmEstoque, PrecoPadrao, CodigoBarra)"
 					+ "VALUES(?, ?, ?, ?)";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, produto.getCodigoProduto());
 			pstmt.setString(2, produto.getDescricaoProduto());
 			pstmt.setDouble(3, produto.getQuantidadeEmEstoque());
 			pstmt.setDouble(4, produto.getPrecoPadrao());
+			pstmt.setString(5, produto.getCodigoBarra());
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -76,16 +135,24 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 			throw new IllegalArgumentException("Id informado inválido");
 		}
 
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		PreparedStatement pstmt = null;
 
 		try {
-			String sql = "UPDATE Produto SET CodigoProduto = ?, DescricaoProduto = ?, QuantidadeEmEstoque = ?, PrecoPadrao = ? WHERE Id = ?";
+			String sql = "UPDATE Produto SET CodigoProduto = ?, DescricaoProduto = ?, QuantidadeEmEstoque = ?, PrecoPadrao = ?, CodigoBarra = ? WHERE Id = ?";
 			pstmt = connection.prepareStatement(sql);
 			pstmt.setString(1, produtoObjeto.getCodigoProduto());
 			pstmt.setString(2, produtoObjeto.getDescricaoProduto());
 			pstmt.setFloat(3, produtoObjeto.getQuantidadeEmEstoque());
 			pstmt.setFloat(4, produtoObjeto.getPrecoPadrao());
-			pstmt.setInt(5, produtoObjeto.getId());
+			pstmt.setString(5, produtoObjeto.getCodigoBarra());
+			pstmt.setInt(6, produtoObjeto.getId());
 			pstmt.executeUpdate();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -97,10 +164,59 @@ public class ProdutoDAOImpl extends BDGenericoDAO implements ProdutoDAO {
 	}
 
 	@Override
+	public Produto getProdutoByCodigoDeBarras(String codigoDeBarras) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			String sql = "SELECT * " + "FROM Produto WHERE CodigoBarra = ?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setString(1, codigoDeBarras);
+			rs = pstmt.executeQuery();
+
+			Produto produto = new Produto();
+
+			if (rs.next()) {
+				produto.setId(Integer.parseInt(rs.getString("Id")));
+				produto.setCodigoProduto(rs.getString("CodigoProduto"));
+				produto.setDescricaoProduto(rs.getString("DescricaoProduto"));
+				produto.setQuantidadeEmEstoque(Float.parseFloat(rs.getString("QuantidadeEmEstoque")));
+				produto.setPrecoPadrao(Float.parseFloat(rs.getString("PrecoPadrao")));
+				produto.setCodigoBarra(rs.getString("CodigoBarra"));
+			}
+
+			return produto;
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return null;
+		} finally {
+			close(rs);
+
+			close(connection);
+		}
+	}
+
+	@Override
 	public void excluiProduto(int produtoId) {
 		if (produtoId == 0) {
 			throw new IllegalArgumentException("Id informado inválido");
 		}
+
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		PreparedStatement pstmt = null;
 
 		try {

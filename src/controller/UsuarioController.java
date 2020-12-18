@@ -60,4 +60,8 @@ public class UsuarioController {
 	public void excluiUsuario(int usuarioId) {
 		this.usuarioDAO.excluiUsuario(usuarioId);
 	}
+
+	public Usuario getUsuarioById(int usuarioId) {
+		return this.usuarioDAO.getUsuarioById(usuarioId);
+	}
 }

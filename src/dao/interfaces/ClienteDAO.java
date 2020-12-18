@@ -12,4 +12,6 @@ public interface ClienteDAO {
 	public Cliente editaCliente(Cliente clienteObjeto);
 
 	public void excluiCliente(int clienteId);
+
+	public Cliente getClienteById(int clienteId);
 }

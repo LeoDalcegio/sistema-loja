@@ -31,6 +31,7 @@ public class jdListCliente extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTable table;
 	private DefaultTableModel model;
+	private ClienteController clienteController;
 
 	/**
 	 * Create the dialog.
@@ -39,6 +40,12 @@ public class jdListCliente extends JDialog {
 	 * @throws ClassNotFoundException
 	 */
 	public jdListCliente() throws ClassNotFoundException, SQLException {
+		ClienteDAOImpl clienteDAOImpl = null;
+
+		clienteDAOImpl = new ClienteDAOImpl();
+
+		clienteController = new ClienteController(clienteDAOImpl);
+
 		setResizable(false);
 		getContentPane().setForeground(UIManager.getColor("DesktopIcon.background"));
 		setTitle("Clientes");
@@ -94,6 +101,7 @@ public class jdListCliente extends JDialog {
 		btnExcluir.setBackground(Color.RED);
 		btnExcluir.setBorderPainted(false);
 		btnExcluir.addActionListener(new ActionListener() {
+
 			public void actionPerformed(ActionEvent arg0) {
 				if (table.getSelectionModel().isSelectionEmpty()) {
 					return;
@@ -103,18 +111,6 @@ public class jdListCliente extends JDialog {
 				int row = table.getSelectedRow();
 				int id = Integer.parseInt(table.getModel().getValueAt(row, column).toString());
 
-				ClienteController clienteController = null;
-
-				ClienteDAOImpl clienteDAOImpl = null;
-
-				try {
-					clienteDAOImpl = new ClienteDAOImpl();
-				} catch (ClassNotFoundException | SQLException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-				clienteController = new ClienteController(clienteDAOImpl);
 				clienteController.excluiCliente(id);
 
 				try {
@@ -141,14 +137,9 @@ public class jdListCliente extends JDialog {
 				}
 
 				int row = table.getSelectedRow();
-				int id = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
-				String nome = table.getModel().getValueAt(row, 1).toString();
-				String cpf = table.getModel().getValueAt(row, 2).toString();
+				int clienteId = Integer.parseInt(table.getModel().getValueAt(row, 0).toString());
 
-				Cliente cliente = new Cliente();
-				cliente.setId(id);
-				cliente.setNome(nome);
-				cliente.setCpf(cpf);
+				Cliente cliente = clienteController.getClienteById(clienteId);
 
 				new jdFormCliente(RequestType.Edit, cliente);
 
@@ -200,11 +191,8 @@ public class jdListCliente extends JDialog {
 	}
 
 	private void montaList() throws ClassNotFoundException, SQLException {
-		ClienteDAOImpl clienteDAOImpl = new ClienteDAOImpl();
 
-		ClienteController clienteController = new ClienteController(clienteDAOImpl);
-
-		List<Cliente> clientes = clienteController.getAllClientes();
+		List<Cliente> clientes = this.clienteController.getAllClientes();
 
 		int rowCount = model.getRowCount();
 

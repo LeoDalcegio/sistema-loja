@@ -14,4 +14,6 @@ public interface UsuarioDAO {
 	public Usuario editaUsuario(Usuario usuarioObjeto);
 
 	public void excluiUsuario(int usuarioId);
+
+	public Usuario getUsuarioById(int usuarioId);
 }

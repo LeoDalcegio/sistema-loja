@@ -13,13 +13,18 @@ import model.Cliente;
 public class ClienteDAOImpl extends BDGenericoDAO implements ClienteDAO {
 	private Connection connection = null;
 
-	public ClienteDAOImpl() throws SQLException, ClassNotFoundException {
-		this.connection = getConnection("sistema-loja");
+	public ClienteDAOImpl() {
 	}
 
 	@Override
 	public void salvaCliente(Cliente cliente) {
 		PreparedStatement pstmt = null;
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
 
 		try {
 			String sql = "INSERT INTO Cliente " + "(Nome, Cpf)" + "VALUES(?, ?)";
@@ -38,6 +43,14 @@ public class ClienteDAOImpl extends BDGenericoDAO implements ClienteDAO {
 	public List<Cliente> getAllClientes() {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		List<Cliente> lstClientes = new ArrayList<Cliente>();
 
 		try {
@@ -71,6 +84,13 @@ public class ClienteDAOImpl extends BDGenericoDAO implements ClienteDAO {
 			throw new IllegalArgumentException("Id informado inválido");
 		}
 
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		PreparedStatement pstmt = null;
 
 		try {
@@ -94,6 +114,14 @@ public class ClienteDAOImpl extends BDGenericoDAO implements ClienteDAO {
 		if (clienteId == 0) {
 			throw new IllegalArgumentException("Id informado inválido");
 		}
+
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
 		PreparedStatement pstmt = null;
 
 		try {
@@ -104,6 +132,44 @@ public class ClienteDAOImpl extends BDGenericoDAO implements ClienteDAO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		} finally {
+			close(connection);
+		}
+	}
+
+	@Override
+	public Cliente getClienteById(int clienteId) {
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		try {
+			this.connection = getConnection("sistema-loja");
+		} catch (ClassNotFoundException | SQLException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+		try {
+			String sql = "SELECT * " + "FROM Cliente WHERE Id = ?";
+			pstmt = connection.prepareStatement(sql);
+			pstmt.setInt(1, clienteId);
+			rs = pstmt.executeQuery();
+
+			Cliente cliente = new Cliente();
+
+			if (rs.next()) {
+				cliente.setId(Integer.parseInt(rs.getString("Id")));
+				cliente.setCpf(rs.getString("CPF"));
+				cliente.setNome(rs.getString("Nome"));
+			}
+
+			return cliente;
+		} catch (Exception e) {
+			e.printStackTrace();
+
+			return null;
+		} finally {
+			close(rs);
+
 			close(connection);
 		}
 	}
